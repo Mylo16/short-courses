@@ -28,7 +28,7 @@ body {
   background-color: var(--primary-bg);
   color: var(--primary-text);
   width: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 body::-webkit-scrollbar {
@@ -43,6 +43,7 @@ body::-webkit-scrollbar-thumb {
 a {
   text-decoration: none;
   display: block;
+  cursor: pointer;
 }
 
 a:hover {

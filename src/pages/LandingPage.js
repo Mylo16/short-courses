@@ -11,27 +11,31 @@ export default function LandingPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [inViewSections, setInViewSections] = useState({
+    section1: false,
+    section2: false,
+    section3: false,
+    section4: false,
+  });
+
+  const handleScroll = () => {
+    const sections = ['scroll-section', 'scroll-section2', 'scroll-section3', 'scroll-section4'];
+    const newInViewSections = { ...inViewSections };
+
+    sections.forEach((section, index) => {
+      const rect = document.getElementById(section).getBoundingClientRect();
+      newInViewSections[`section${index + 1}`] = rect.top < window.innerHeight * 0.8 && rect.top + rect.height > 0;
+    });
+
+    setInViewSections(newInViewSections);
+  };
+
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-visible");
-            entry.target.classList.remove("animate-hidden");
-          } else {
-            entry.target.classList.remove("animate-visible");
-            entry.target.classList.add("animate-hidden");
-          }
-        });
-      },
-      { threshold: 0.4 }
-    );
-
-    const elements = document.querySelectorAll(".animate-hidden");
-    elements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect(); // Cleanup
-  }, []);
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [inViewSections]);
 
   const validate = async (event) => {
     event.preventDefault();
@@ -95,13 +99,13 @@ export default function LandingPage() {
         </div>
         <div className='gallery-view'>
           <div className='students'>
-           <div className='students-row1'>
-             <img className='red-stu red-stu1 animate-hidden' src={images.stu1} alt='student'/>
-             <img className='blue-stu' src={images.stu2} alt='student'/>
+           <div id='scroll-section' className={`students-row1 ${inViewSections.section1 ? 'in-view':''}`}>
+             <img className='red-stu red-stu1 left' src={images.stu1} alt='student'/>
+             <img className='blue-stu blue-stu1 right' src={images.stu2} alt='student'/>
            </div>
-           <div className='students-row2'>
-             <img className='blue-stu' src={images.stu3} alt='student'/>
-             <img className='red-stu red-stu2' src={images.stu4} alt='student'/>
+           <div id='scroll-section' className={`students-row2 ${inViewSections.section1 ? 'in-view':''}`}>
+             <img className='blue-stu blue-stu2 left' src={images.stu3} alt='student'/>
+             <img className='red-stu red-stu2 right' src={images.stu4} alt='student'/>
            </div>
           </div>
           <div className='gallery-txt'>
@@ -239,7 +243,7 @@ export default function LandingPage() {
           Discover firsthood the impact our courses have had on their lives.
         </div>
         <div className='tes-card-ctn'>
-          <div className='tes-card'>
+          <div id='scroll-section2' className={`tes-card ${inViewSections.section2 ? 'in-view2':''}`}>
             <div className='tes-stu-ctn'>
               <div className='tes-stu-img'><img src={images.stu1}/></div>
               <div className='tes-stu-bio'>
@@ -252,7 +256,7 @@ export default function LandingPage() {
               Absolutely transformative experience!
             </div>
           </div>
-          <div className='tes-card'>
+          <div id='scroll-section3' className={`tes-card ${inViewSections.section3 ? 'in-view3':''}`}>
             <div className='tes-stu-ctn'>
               <div className='tes-stu-img'><img src={images.stu1}/></div>
               <div className='tes-stu-bio'>
@@ -265,7 +269,7 @@ export default function LandingPage() {
               Absolutely transformative experience!
             </div>
           </div>
-          <div className='tes-card'>
+          <div id='scroll-section4' className={`tes-card ${inViewSections.section4 ? 'in-view3':''}`}>
             <div className='tes-stu-ctn'>
               <div className='tes-stu-img'><img src={images.stu1}/></div>
               <div className='tes-stu-bio'>

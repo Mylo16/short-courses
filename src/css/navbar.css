@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,800;1,300&display=swap');
+
+:root {
+  --primary-bg: #fff8ee;
+  --secondary-bg: rgb(216, 1, 1);
+  --accent-bg: #2C2C2C;
+
+  --primary-text: #2C2C2C;
+  --secondary-text: #d80101;
+  --muted-text: #757575;
+
+  --primary-accent: rgb(255, 152, 0);
+  --secondary-accent: rgb(39,202,204);
+  --error-color: #FF5722;
+  --success-color: #4CAF50;
+
+  --border-color: #333333;
+
+  --hover-bg: #333333;
+  --focus-outline: #FF9800;
+}
+
+header, .navbar {
+  background-color: var(--secondary-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  color: white;
+  padding: 0.5rem 1rem;
+  position: relative;
+}
+
+.menu-icon {
+  cursor: pointer;
+  width: 30px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+}
+
+.icon-bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin: 0;
+  background-color: var(--primary-accent);
+  transition: all 0.4s ease;
+}
+
+.rotate {
+  transform: rotate(45deg);
+  position: relative;
+  top: 10px;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.rotate-reverse {
+  transform: rotate(-45deg);
+  position: relative;
+  top: -10px;
+}
+
+.logo-pic {
+  width: 10em;
+}
+
+.sign-in {
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
+  background-color: rgb(216, 1, 1);
+  border-radius: 10px;
+  padding: 2px 5px;
+  height: 25px;
+  gap: 5px;
+  font-size: small;
+}
+
+.profile {
+  width: 25px;
+}
+
+.links {
+  display: none;
+}
+
+.links.open {
+  display: block;
+  position: absolute;
+  top: 50px;
+  height: 100vh;
+  right: 0;
+  background: var(--accent-bg);
+  width: 50%;
+  z-index: 999;
+}
+
+.links a {
+  color: #01d371;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: block;
+}
+
+.side-link:hover {
+  background: #ccc;
+}

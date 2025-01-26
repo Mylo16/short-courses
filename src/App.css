@@ -41,20 +41,13 @@ body::-webkit-scrollbar-thumb {
 }
 
 a {
-  color: wheat;
   text-decoration: none;
+  display: block;
 }
 
 a:hover {
-  color: var(--secondary-accent);
+  color: var(--primary-text);
 }
-
-footer {
-  background-color: var(--secondary-bg);
-  border-top: 1px solid var(--border-color);
-  color: var(--secondary-text);
-}
-
 
 button {
   background-color: var(--secondary-bg);

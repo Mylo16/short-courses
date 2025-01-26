@@ -19,9 +19,17 @@ import lec1 from '../assets/lec1.png';
 import lec2 from '../assets/lec2.png';
 import lec3 from '../assets/lec3.png';
 import lec4 from '../assets/lec4.png';
+import facebook from '../assets/facebook.png';
+import twitter from '../assets/twitter.png';
+import linkedin from '../assets/linkedin.png';
+import youtube from '../assets/youtube.png';
 
 const images = {
   profile,
+  facebook,
+  twitter,
+  linkedin,
+  youtube,
   lec1,
   lec2,
   lec3,

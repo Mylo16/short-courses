@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../css/landing.css'
 import images from '../utils/images';
 import axios from 'axios';
+import Footer from '../components/Footer';
 
 export default function LandingPage() {
   const [email, setEmail] = useState('');
@@ -9,6 +10,28 @@ export default function LandingPage() {
   const [name, setName] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-visible");
+            entry.target.classList.remove("animate-hidden");
+          } else {
+            entry.target.classList.remove("animate-visible");
+            entry.target.classList.add("animate-hidden");
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    const elements = document.querySelectorAll(".animate-hidden");
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect(); // Cleanup
+  }, []);
 
   const validate = async (event) => {
     event.preventDefault();
@@ -73,7 +96,7 @@ export default function LandingPage() {
         <div className='gallery-view'>
           <div className='students'>
            <div className='students-row1'>
-             <img className='red-stu red-stu1' src={images.stu1} alt='student'/>
+             <img className='red-stu red-stu1 animate-hidden' src={images.stu1} alt='student'/>
              <img className='blue-stu' src={images.stu2} alt='student'/>
            </div>
            <div className='students-row2'>
@@ -257,44 +280,65 @@ export default function LandingPage() {
           </div>
           <button className='tes-btn'>See All</button>
         </div>
-        <section className='contact-stn'>
-        <div className='cs-content-ctn'>
-          <div className='cs-content-left'>Have questions for us?<br/> Feel free to put them in a chat</div>
-          <div className='cs-content-right'>
-          <form id="getintouch-form" onSubmit={validate}>
-          <div class="getintouch-form">
-            <input id="name"
-            class="input border"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Full name"
-            maxlength="30"
-            disabled={isSubmitting}
-            required
-            />
-            <input id="email"
-            name="mail"
-            class="input border"
-            type="email"
-            value={email}
-            placeholder="Email address"
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={isSubmitting}
-            required
-            />
-            <textarea name="message" value={message} onChange={(e) => setMessage(e.target.value)} id="textarea" disabled={isSubmitting} cols="30" rows="5" placeholder="Hello E-Learning. I would like to get in touch with you..." required></textarea>
-            <button id="getintouch-btn" type="submit" class="getintouchbtn">
-              Get in touch
-            </button>
-            {errorMsg && <div id='error-msg'>{errorMsg}</div>}
-        </div>
-      </form>
+      </section>
+      <section className="contact-stn">
+        <div className="cs-content-ctn">
+          <div className="cs-content-left">
+            Have questions for us?
+            <br />
+            Feel free to put them in a chat
+          </div>
+
+          <div className="cs-content-right">
+            <form id="getintouch-form" onSubmit={validate}>
+              <div className="getintouch-form">
+                <input
+                  id="name"
+                  className="input border"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Full name"
+                  maxLength="30"
+                  disabled={isSubmitting}
+                  required
+                />
+
+                <input
+                  id="email"
+                  name="mail"
+                  className="input border"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email address"
+                  disabled={isSubmitting}
+                  required
+                />
+
+                <textarea
+                  id="textarea"
+                  name="message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  cols="30"
+                  rows="5"
+                  placeholder="Hello E-Learning. I would like to get in touch with you..."
+                  disabled={isSubmitting}
+                  required
+                ></textarea>
+
+                <button id="getintouch-btn" type="submit" className="getintouchbtn">
+                  Get in touch
+                </button>
+
+                {errorMsg && <div id="error-msg">{errorMsg}</div>}
+              </div>
+            </form>
           </div>
         </div>
+        <Footer />
       </section>
-      </section>
-      
     </>
     
   );

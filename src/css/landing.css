@@ -254,7 +254,7 @@
   background-color: var(--secondary-accent);
   display: flex;
   border-radius: 50%;
-  width: 50px;
+  width: 40px;
   height: 35px;
   align-items: center;
   justify-content: center;
@@ -290,5 +290,302 @@
   text-align: center;
   font-size: 12px;
   color: var(--primary-text);
+}
+
+.course-card-ctn {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.course-card {
+  box-shadow: 0px 0px 10px 0px rgb(107, 26, 26);
+  border-radius: 15px;
+  background-color: var(--primary-bg);
+  width: 70%;
+  padding: 10px;
+}
+
+.course-pic {
+  width: 100%;
+  height: 20em;
+  border-radius: 10px;
+  transition: 0.5s ease-in-out;
+}
+
+.course-pic:hover {
+  transform: scale(1.1);
+  height: 20em;
+}
+
+.course-program {
+  display: flex;
+  justify-content: space-between;
+}
+
+.program-type {
+  background-color: var(--secondary-accent);
+  font-size: small;
+  padding: 2px 4px;
+  border-radius: 5px;
+}
+
+.rating {
+  font-size: small;
+}
+
+.course-name {
+  margin: 5px 0;
+  font-weight: 450;
+}
+
+.instructor-stn {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-top: 1em;
+}
+
+.course-price {
+  background: linear-gradient(0deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
+  padding: 2px 4px;
+  border-radius: 10px;
+}
+
+.instructor {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.instructor img {
+  width: 20px;
+}
+
+.instructor-name {
+  font-size: small;
+}
+
+.instructor-stn::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 0%;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%);
+}
+
+/***** FACILITATORS *****/
+.fs-title {
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.fs-card-ctn {
+  display: flex;
+  padding: 10px;
+  gap: 1em;
+  margin: 1em auto;
+  width: 95%;
+  overflow-x: scroll;
+}
+
+.fs-card-ctn::-webkit-scrollbar {
+  height: 10px;
+}
+
+.fs-card-ctn::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Customize scrollbar thumb color */
+  border-radius: 5px;
+}
+
+.fs-card {
+  min-width: 200px;
+  border-radius: 15px;
+  padding: 10px;
+  background-color: var(--primary-bg);
+  box-shadow: 0px 0px 10px 0px rgb(107, 26, 26);
+}
+
+.fs-card img {
+  width: 100%;
+}
+
+.lec1 {
+  transform: scale(1.4, 1.3);
+}
+
+.lec2 {
+  transform: scale(1.7);
+}
+
+.fs-img-ctn {
+  background: linear-gradient(0deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.fs-name {
+  margin-top: 10px;
+}
+
+.fs-bio {
+  display: flex;
+  font-size: small;
+}
+
+.location-icon {
+  background-color: var(--secondary-accent);
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+/***** TESTIMONIALS *****/
+.testimonials {
+  background: linear-gradient(40deg, rgba(255,88,88,1) 0%, rgba(39,202,204,1) 100%);
+  padding: 2em 10px;
+}
+
+.tes-title {
+  font-family: 1.2em;
+  text-align: center;
+  font-weight: 450;
+}
+
+.tes-description {
+  font-size: small;
+  text-align: center;
+}
+
+.tes-card-ctn {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+}
+
+.tes-card {
+  width: 60%;
+  background-color: var(--primary-bg);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.tes-stu-ctn {
+  display: flex;
+  gap: 1em;
+  position: relative;
+}
+
+.tes-stu-ctn::after {
+  content: '';
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgb(254, 2, 2) 50%, rgba(0, 0, 0, 0) 100%);
+
+}
+
+.tes-stu-bio {
+  font-size: small;
+}
+
+.tes-stu-bio .tes-stu-name {
+  font-size: 1.2em;
+}
+
+.tes-stu-major {
+  background-color: var(--secondary-accent);
+  padding: 0 5px;
+  border-radius: 5px;
+}
+
+.tes-stu-img img {
+  width: 50px;
+  border-radius: 50%;
+}
+
+.tes-stu-message {
+  font-size: small;
+  margin-top: 10px;
+}
+
+/***** GET IN TOUCH *****/
+.contact-stn {
+  border-radius: 30px 0 30px 0;
+  background-color: var(--primary-bg);
+  margin: 3em 0;
+  padding: 10px;
+}
+
+.cs-content-left {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.input {
+  margin-top: 25px;
+  padding: 12px;
+  background-color: white;
+  border: none;
+  font-family: "Inter", sans-serif;
+  width: 90%;
+}
+
+.error {
+  margin-top: 25px;
+  background-color: white;
+  border: none;
+  font-family: "Inter", sans-serif;
+  width: 20rem;
+  color: red;
+}
+
+#textarea {
+  margin-top: 25px;
+  padding: 12px;
+  background-color: #fbf8f7;
+  width: 90%;
+  border: none;
+  font-family: "Inter", sans-serif;
+  resize: none;
+}
+
+.border {
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.getintouchbtn {
+  transition: all 300ms;
+  margin: 1em;
+}
+
+.getintouchbtn:hover {
+  cursor: pointer;
+  background-color: #fff5e1;
+  color: rgb(24 12 6);
+  scale: 1.05;
+  border: 1px solid rgb(161 58 0);
+}
+
+.getintouchbtn:focus {
+  background-color: #e05304;
+  color: #120a08;
+}
+
+.getintouch-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin: auto;
+  border-radius: 20px;
+  background: linear-gradient(40deg, rgba(255,88,88,1) 0%, rgba(39,202,204,1) 100%);
 }
 

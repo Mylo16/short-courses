@@ -1,0 +1,41 @@
+:root {
+  --primary-bg: #fff8ee;
+  --secondary-bg: rgb(216, 1, 1);
+  --accent-bg: #2C2C2C;
+
+  --primary-text: #2C2C2C;
+  --secondary-text: #d80101;
+  --muted-text: #757575;
+
+  --primary-accent: rgb(255, 152, 0);
+  --secondary-accent: rgb(39,202,204);
+  --error-color: #FF5722;
+  --success-color: #4CAF50;
+
+  --border-color: #333333;
+
+  --hover-bg: #333333;
+  --focus-outline: #FF9800;
+}
+
+.courses-ctn {
+  padding-top: 4em;
+}
+
+.courses-title {
+  font-size: 1.2em;
+  font-weight: 450;
+  padding: 1em 10px 0 10px;
+}
+
+.courses-msg {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.cat-title {
+  font-weight: 450;
+  margin-left: 10px;
+  color: var(--primary-text);
+  margin-top: 1em;
+}

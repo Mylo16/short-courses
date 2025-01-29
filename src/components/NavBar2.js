@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-import images from '../utils/images';
-import '../css/navbar.css'
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import '../css/navbar.css';
+import '../css/navbar2.css';
+import images from "../utils/images";
 
-function Navbar() {
+export default function NavBar2() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeLink, setActiveLink] = useState(null);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLinkClicked = (index) => {
@@ -34,26 +33,25 @@ function Navbar() {
       document.removeEventListener('click', handleClickOutside);
     };
   }, [isOpen]);
-
-  return (
+  return(
     <>
-      <nav className="nav">
+      <nav className="nav nav2">
         <div className="logo">
           <img className='logo-pic' src={images.logo}/>
         </div>
-        <div onClick={() => navigate('/dashboard')} className='sign-in'>
+        <img className="notification" src={images.notification} />
+        <div onClick={() => navigate('/dashboard')} className='sign-in sign-in2'>
           <img className='profile' src={images.profile} />
-          <p>Sign in</p>
         </div>
-        <div className="menu-icon" onClick={() => setIsOpen(!isOpen)}>
+        <div className="menu-icon menu-icon2" onClick={() => setIsOpen(!isOpen)}>
           <span className={`icon-bar ${isOpen ? 'rotate' : ''}`}></span>
           <span className={`icon-bar ${isOpen ? 'fade-out' : ''}`}></span>
           <span className={`icon-bar ${isOpen ? 'rotate-reverse' : ''}`}></span>
         </div>
-        <div className={`links ${isOpen ? 'open' : ''}`}>
+        <div className={`links links2 ${isOpen ? 'open' : ''}`}>
           <ul className="side-links">
             <li className={`side-link ${activeLink === 1 ? 'active' : ''}`} onClick={() => handleLinkClicked(1)}>
-              <Link className="link" to="/home">Home</Link>
+              <Link className="link" to="/dashboard">Dashboard</Link>
             </li>
             <li className={`side-link ${activeLink === 2 ? 'active' : ''}`} onClick={() => handleLinkClicked(2)}>
               <Link className="link" to="/courses">Courses</Link>
@@ -66,12 +64,8 @@ function Navbar() {
             </li>
           </ul>
         </div>
-        
         {isOpen && <div className="overlay" onClick={() => setIsOpen(false)} />}
       </nav>
-      <div className="outlet"><Outlet /></div>
     </>
-  );
+ );
 }
-
-export default Navbar;

@@ -94,18 +94,18 @@ header, .navbar {
 }
 
 .links {
-  display: none;
-}
-
-.links.open {
-  display: block;
   position: absolute;
-  top: 50px;
+  top: 70px;
+  right: -100%;
   height: 100vh;
-  right: 0;
   background: var(--accent-bg);
   width: 50%;
   z-index: 999;
+  transition: right 0.5s ease-in-out;
+}
+
+.links.open {
+  right: 0;
 }
 
 .links a {

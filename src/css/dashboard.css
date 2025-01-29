@@ -1,0 +1,238 @@
+:root {
+  --primary-bg: #fff8ee;
+  --secondary-bg: rgb(216, 1, 1);
+  --accent-bg: #2C2C2C;
+
+  --primary-text: #2C2C2C;
+  --secondary-text: #d80101;
+  --muted-text: #757575;
+
+  --primary-accent: rgb(255, 152, 0);
+  --secondary-accent: rgb(39,202,204);
+  --error-color: #FF5722;
+  --success-color: #4CAF50;
+
+  --border-color: #333333;
+
+  --hover-bg: #333333;
+  --focus-outline: #FF9800;
+}
+
+.welcome-msg {
+  padding: 10px;
+
+}
+
+.dashboard-ctn {
+  padding-top: 4em;
+}
+
+.timeline-stn {
+  padding: 10px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.753);
+}
+
+.tl-header {
+  font-size: 1.2em;
+  font-weight: 450;
+}
+
+.tl-description {
+  font-size: 12px;
+}
+
+.tl-ctn {
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: auto;
+  padding: 20px 1px;
+  gap: 1em;
+}
+
+.tl-card {
+  font-size: 12px;
+  flex: 0 0 auto;
+  min-width: 200px;
+  box-shadow: 0px 0px 3px 0px rgb(107, 26, 26);
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.tl-profile-ctn {
+  display: flex;
+  margin: 10px 0;
+  gap: 7px;
+  align-items: center;
+}
+
+.tl-profile,
+.yc-profile {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--secondary-accent);
+  overflow: hidden;
+}
+
+.tl-profile img,
+.yc-profile img {
+  width: 30px;
+}
+
+.tl-card .tl-title {
+  font-size: 1.2em;
+  font-weight: 450;
+  margin: 5px 0;
+}
+
+.tl-date-ctn {
+  display: flex;
+}
+
+.tl-card button {
+  padding: 5px;
+  margin: 5px 0;
+  border: solid 1px var(--primary-accent);
+  background-color: transparent;
+  color: var(--primary-accent);
+}
+
+/***** YOUR COURSES *****/
+.yc-title-ctn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+  margin: auto;
+}
+
+.yc-title {
+  font-size: 1.2em;
+  font-weight: 450;
+  padding: 10px;
+}
+
+.yc-view-btn {
+  background-color: transparent;
+  border: solid 1.5px var(--primary-accent);
+  padding: 5px 8px;
+  color: var(--primary-accent);
+}
+
+.your-courses {
+  overflow: hidden;
+  width: 100vw;
+  background: linear-gradient(60deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
+  background: rgba(244, 248, 184, 0.301);
+  padding-bottom: 2em;
+}
+
+.yc-ctn {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px;
+}
+
+.yc-card {
+  width: 200px;
+  box-shadow: 0px 0px 3px 0px rgb(107, 26, 26);
+  border-radius: 15px;
+  padding: 10px;
+  background-color: var(--primary-bg);
+}
+
+.yc-img-ctn {
+  overflow: hidden;
+  height: 160px;
+  margin: auto;
+  border-radius: 15px;
+  transition: 0.5s ease-in-out;
+}
+
+.yc-img-ctn:hover {
+  height: 250px;
+}
+
+.yc-img-ctn img {
+  width: 200px;
+}
+
+.yc-summary-ctn {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.yc-name {
+  font-size: 14px;
+  margin: 5px 0;
+  height: 35px;
+}
+
+.yc-status-ctn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.yc-status {
+  color: var(--secondary-text);
+  background-color: var(--secondary-accent);
+  width: fit-content;
+  padding: 2px 5px;
+  border-radius: 5px;
+  /* margin-bottom: 20px; */
+  font-size: 12px;
+}
+
+.tp-price {
+  color: var(--success-color);
+  background-color: transparent;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.w-32 {
+  width: 3rem; /* 128px */
+  position: relative;
+}
+
+.h-32 {
+  height: 3rem; /* 128px */
+}
+
+
+.text {
+  position: absolute;
+  font-size: 12px;
+  top: 25%;
+  left: 20%;
+}
+
+.yc-profile-ctn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  position: relative;
+}
+
+.yc-profile-ctn::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 0;
+  height: 1px;
+  background-color: var(--muted-text);
+  width: 100%;
+}
+
+.bottom {
+  margin-bottom: 0;
+}

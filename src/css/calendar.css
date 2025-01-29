@@ -1,0 +1,154 @@
+/* Base styles for the calendar container */
+.calendar-container {
+  width: 90%;
+  margin: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Header and title styling */
+.calendar-container h2 {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+/* FullCalendar Wrapper */
+.fc {
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.fc-toolbar-chunk .fc-toolbar-title {
+  font-size: 1.2em;
+  font-weight: 450;
+}
+
+/* Customize the calendar's day grid view */
+.fc-daygrid-day {
+  border-radius: 5px;
+  padding: 5px;
+}
+
+/* Event style */
+.fc-event {
+  background-color: #3f72af;
+  color: white;
+  border-radius: 5px;
+  padding: 2px;
+  font-size: 12px;
+}
+
+.fc-event:hover {
+  background-color: #2c5f87;
+}
+
+/* Hovering effect for events */
+.fc-daygrid-day:hover {
+  background-color: #e0f7fa;
+  cursor: pointer;
+}
+
+/* Styles for the datepicker controls (next/previous buttons) */
+.fc-toolbar-chunk .fc-button {
+  background-color: #3f72af;
+  color: white;
+  font-size: 12px;
+  border: none;
+  padding: 5px;
+}
+
+.fc-button:hover {
+  background-color: #2c5f87;
+}
+
+tr .fc-col-header-cell-cushion {
+  font-weight: 450;
+  font-size: 12px;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  .modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+    font-size: 12px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    margin: 10px 0;
+  }
+  .add-event-form {
+    margin-top: 20px;
+  }
+  .add-event-form input {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 90%;
+  }
+  .add-event-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .add-event-btn:hover {
+    background: #0056b3;
+  }
+
+  .input-ctn {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    margin-bottom: 10px;
+  }
+
+  .close-modal-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #ccc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .close-modal-btn:hover {
+    background: #999;
+  }
+
+  .edit-event-btn,
+  .delete-event-btn {
+    margin-right: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .edit-event-btn {
+    background-color: #ffc107;
+    color: white;
+  }
+  .delete-event-btn {
+    background-color: #dc3545;
+    color: white;
+  }

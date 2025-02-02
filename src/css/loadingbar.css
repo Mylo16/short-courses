@@ -1,0 +1,55 @@
+/*** LOADING BAR ***/
+.loadingbar-container {
+  display: flex;
+  gap: 0.7em;
+}
+
+.loadingbar-container div {
+  height: 3.5em;
+  border-radius: 5px;
+  width: 0.3em;
+  background-color: #3F20FF;
+}
+
+.loading {
+  position: absolute;
+  top: 0%;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
+  background-color: #f0efefa8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.no-loading {
+  display: none;
+}
+
+@keyframes loadingAnim {
+  0% {
+    transform: scaleY(1);
+  }
+
+  100% {
+    transform: scaleY(0.2);
+    border-radius: 50%;
+  }
+}
+
+.b3 {
+  animation: loadingAnim 1s linear infinite;
+}
+
+.b2,
+.b4 {
+  animation: loadingAnim 1s linear 0.25s infinite;
+}
+
+.b1,
+.b5 {
+  animation: loadingAnim 1s linear 0.5s infinite;
+}

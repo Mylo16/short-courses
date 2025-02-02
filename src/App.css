@@ -20,6 +20,10 @@
   --focus-outline: #FF9800;
 }
 
+#root {
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -28,7 +32,6 @@ body {
   background-color: var(--primary-bg);
   color: var(--primary-text);
   width: 100%;
-  overflow-x: hidden;
 }
 
 body::-webkit-scrollbar {

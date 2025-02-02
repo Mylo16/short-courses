@@ -29,15 +29,27 @@ import twitter from '../assets/twitter.png';
 import linkedin from '../assets/linkedin.png';
 import youtube from '../assets/youtube.png';
 import notification from '../assets/notification.png';
+import banner1 from '../assets/banner1.jpg';
+import view from '../assets/view.png';
+import noView from '../assets/no-view.png';
+import google from '../assets/google.png';
+import correct from '../assets/correct.png';
+import wrong from '../assets/wrong.png';
 
 const images = {
   profile,
+  correct,
+  wrong,
+  google,
+  view,
+  noView,
   facebook,
   twitter,
   notification,
   linkedin,
   youtube,
   lec1,
+  banner1,
   lec2,
   lec3,
   lec4,

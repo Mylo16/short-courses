@@ -4,7 +4,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import images from '../utils/images';
 import '../css/navbar.css'
 
-function Navbar() {
+function Navbar({ user }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeLink, setActiveLink] = useState(null);
   const dispatch = useDispatch();
@@ -35,13 +35,21 @@ function Navbar() {
     };
   }, [isOpen]);
 
+  const handleSignIn = () => {
+    if (user) {
+      navigate("/dashboard"); // Redirect to dashboard if logged in
+    } else {
+      navigate("/login"); // Redirect to login page if not logged in
+    }
+  }
+
   return (
     <>
       <nav className="nav">
         <div className="logo">
           <img className='logo-pic' src={images.logo}/>
         </div>
-        <div onClick={() => navigate('/dashboard')} className='sign-in'>
+        <div onClick={handleSignIn} className='sign-in'>
           <img className='profile' src={images.profile} />
           <p>Sign in</p>
         </div>

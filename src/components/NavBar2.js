@@ -3,12 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import '../css/navbar.css';
 import '../css/navbar2.css';
 import images from "../utils/images";
+import { useAuth } from "../utils/authProvider";
 
 export default function NavBar2() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeLink, setActiveLink] = useState(null);
-  const navigate = useNavigate();
-
+  const { user, logout } = useAuth();
   const handleLinkClicked = (index) => {
     setActiveLink(index);
     setIsOpen(false);
@@ -40,7 +40,7 @@ export default function NavBar2() {
           <img className='logo-pic' src={images.logo}/>
         </div>
         <img className="notification" src={images.notification} />
-        <div onClick={() => navigate('/dashboard')} className='sign-in sign-in2'>
+        <div onClick={() => {logout()}} className='sign-in sign-in2'>
           <img className='profile' src={images.profile} />
         </div>
         <div className="menu-icon menu-icon2" onClick={() => setIsOpen(!isOpen)}>
@@ -57,11 +57,12 @@ export default function NavBar2() {
               <Link className="link" to="/courses">Courses</Link>
             </li>
             <li className={`side-link ${activeLink === 4 ? 'active' : ''}`} onClick={() => handleLinkClicked(4)}>
-              <Link className="link" to="/teachers">Teachers</Link>
-            </li>
-            <li className={`side-link ${activeLink === 5 ? 'active' : ''}`} onClick={() => handleLinkClicked(5)}>
               <Link className="link" to="/about">About Us</Link>
             </li>
+            <li className={`side-link ${user.role === "admin" ? 'not-admin': ''} ${activeLink === 5 ? 'active' : ''}`} onClick={() => handleLinkClicked(5)}>
+              <Link className="link" to="/admin">Admin Panel</Link>
+            </li>
+            
           </ul>
         </div>
         {isOpen && <div className="overlay" onClick={() => setIsOpen(false)} />}

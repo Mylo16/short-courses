@@ -80,15 +80,15 @@ function Courses() {
           }
           </div>
         </section>
-        <div className='logo-strike bottom'>
-          <img className='strike-mob' src={images.logo2}/>
-          <img className='strike-mob' src={images.logo2}/>
-          <img className='strike-mob' src={images.logo2}/>
-          <img className='strike-pc' src={images.logo2}/>
-          <img className='strike-pc' src={images.logo2}/>
-        </div>
+        
       </div>
-      
+      <div className='logo-strike bottom'>
+        <img className='strike-mob' src={images.logo2}/>
+        <img className='strike-mob' src={images.logo2}/>
+        <img className='strike-mob' src={images.logo2}/>
+        <img className='strike-pc' src={images.logo2}/>
+        <img className='strike-pc' src={images.logo2}/>
+      </div>
     </>
   );
 }

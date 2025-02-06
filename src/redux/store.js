@@ -1,8 +1,31 @@
 import { configureStore } from "@reduxjs/toolkit";
 import calendarReducer from "./calendarSlice";
+import coursesReducer from "./coursesSlice";
+import usersReducer from "./usersSlice";
+import lessonsReducer from "./lessonsSlice";
+import enrollmentsReducer from "./enrollmentsSlice";
 
 export const store = configureStore({
   reducer: {
     calendar: calendarReducer,
+    enrollments: enrollmentsReducer,
+    courses: coursesReducer,
+    users: usersReducer,
+    lessons: lessonsReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore actions with non-serializable values in these paths
+        ignoredActions: [
+          'users/fetchFacilitators/fulfilled',
+          'users/fetchUsers/fulfilled',
+        ],
+        // Ignore these specific paths in the state
+        ignoredPaths: [
+          'users.facilitators',
+          'users.users',
+        ],
+      },
+    }),
 });

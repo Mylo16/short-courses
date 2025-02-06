@@ -1,0 +1,25 @@
+.header {
+  text-align: center;
+}
+
+.admin-panel {
+  padding: 5em 10px 0 10px;
+}
+
+.ap-form {
+  background-color: wheat;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 2em 3em;
+  border-radius: 20px;
+  margin-bottom: 2em;
+}
+
+.ap-form select {
+  display: block;
+}
+
+.react-select {
+  font-size: 13px;
+}

@@ -35,9 +35,13 @@ import noView from '../assets/no-view.png';
 import google from '../assets/google.png';
 import correct from '../assets/correct.png';
 import wrong from '../assets/wrong.png';
+import chevronUp from '../assets/chevron-up.png';
+import chevronDown from '../assets/chevron-down.png';
 
 const images = {
   profile,
+  chevronDown,
+  chevronUp,
   correct,
   wrong,
   google,

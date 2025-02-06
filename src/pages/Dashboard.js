@@ -5,27 +5,25 @@ import images from "../utils/images";
 import '../css/dashboard.css';
 import CircleProgressBar from "../utils/progressbar";
 import AdminCalendar from "../components/Calendar";
-import { getCourses } from "../utils/firestoreService";
+import { getCourses, fetchEnrolledCourses } from "../utils/firestoreService";
+import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../utils/firebaseConfig";
+import { fetchEnrollments } from "../redux/enrollmentsSlice";
+import { fetchCourses } from "../redux/coursesSlice";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [courses, setCourses] = useState('');
-  
+  const dispatch = useDispatch();
+  const { enrolledCourses, status } = useSelector((state) => state.enrollments);
+  const { courses } = useSelector((state) => state.courses);
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const fetchedCourses = await getCourses(); // Wait for the data
-        setCourses(fetchedCourses);
-      } catch (error) {
-        console.error("Error fetching courses:", error);
-      }
-    };
-  
-    fetchCourses();
+    
+    dispatch(fetchEnrollments(auth.currentUser.uid));
+    dispatch(fetchCourses());
+
   }, []);
 
-  console.log(courses);
   
   useEffect(() => {
     const handleBackButton = () => {
@@ -38,6 +36,10 @@ export default function Dashboard() {
       window.removeEventListener("popstate", handleBackButton);
     };
   }, [navigate]);
+
+  const handleCourseClick = (courseId) => {
+    navigate(`/course-details/${courseId}`);
+  }
 
   return(
     <>
@@ -103,60 +105,27 @@ export default function Dashboard() {
           </div>
         </section>
         <section className="your-courses">
-          <div className="yc-title">Your Courses</div>
-          {courses && courses.map((course, index) => (
+          {enrolledCourses.length > 0 && (<div className="yc-title">Your Courses</div>)}
+          {enrolledCourses && enrolledCourses.map((course, index) => (
             <div key={index} className="yc-ctn">
-              <div className="yc-card">
+              <div onClick={() => handleCourseClick(course.id)} className="yc-card">
                 <div className="yc-img-ctn"><img src={course.course_pic} alt="course-pic"/></div>
                 <div className="yc-summary-ctn">
-                  <div>▶️ {course.videos}</div>
+                  <div>▶️ {course.numVideos} videos</div>
                   <div>⌚ {course.duration}</div>
                 </div>
                 <div className="yc-name">{course.course_name}</div>
-                <div className="yc-status tp-price">GHC {course.price}</div>
+                <div className="yc-status-ctn">
+                  <div className="yc-status">Enrolled</div>
+                  <CircleProgressBar percentage={course.progress} />
+                </div>
                 <div className="yc-profile-ctn">
-                  <div className="yc-profile"><img src={course.facilitator.user_img}/></div>
-                  <div>{course.facilitator.name}</div>
+                  <div className="yc-profile"><img src={course.facilitatorImage}/></div>
+                  <div>{course.facilitatorName}</div>
                 </div>
               </div>
             </div>
           ))}
-          <div className="yc-ctn">
-            <div className="yc-card">
-              <div className="yc-img-ctn"><img src={images.card1} /></div>
-              <div className="yc-summary-ctn">
-                <div>▶️ 10 videos</div>
-                <div>⌚ 8 weeks</div>
-              </div>
-              <div className="yc-name">Financial Accounting Basics</div>
-              <div className="yc-status-ctn">
-                <div className="yc-status">Enrolled</div>
-                <CircleProgressBar percentage={75} />
-              </div>
-              <div className="yc-profile-ctn">
-                <div className="yc-profile"><img src={images.lec1}/></div>
-                <div>Prince Darabor</div>
-              </div>
-              
-            </div>
-            <div className="yc-card">
-              <div className="yc-img-ctn"><img src={images.card3} /></div>
-              <div className="yc-summary-ctn">
-                <div>▶️ 10 videos</div>
-                <div>⌚ 8 weeks</div>
-              </div>
-              <div className="yc-name">Financial Accounting Basics</div>
-              <div className="yc-status-ctn">
-                <div className="yc-status">Enrolled</div>
-                <CircleProgressBar percentage={60} />
-              </div>
-              <div className="yc-profile-ctn">
-                <div className="yc-profile"><img src={images.lec1}/></div>
-                <div>Prince Darabor</div>
-              </div>
-              
-            </div>
-          </div>
         </section>
         <section className="courses-stn">
           <div className="yc-title-ctn">
@@ -208,7 +177,7 @@ export default function Dashboard() {
           </div>
         </section>
         <section className="calendar-stn">
-          <AdminCalendar user="user" />
+          <AdminCalendar user="admin" />
         </section>
         <div className='logo-strike bottom'>
           <img className='strike-mob' src={images.logo2}/>

@@ -1,24 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { addEvent, deleteEvent, editEvent } from "../redux/calendarSlice";
+import { createEvent, deleteEvent, fetchEventsForDate } from "../redux/calendarSlice";
 import '../css/calendar.css';
+import { auth } from "../utils/firebaseConfig";
+import { fetchCourses } from "../redux/coursesSlice";
+import Select from "react-select";
 
 const AdminCalendar = ({ user }) => {
   const dispatch = useDispatch();
-  const events = useSelector((state) => state.calendar.events);
+  const { events, eventsForDate } = useSelector((state) => state.calendar);
+  const { courses } = useSelector((state) => state.courses);
+  console.log(courses);
 
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedCourse, setSelectedCourse] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [editingEvent, setEditingEvent] = useState(null);
   const [newEvent, setNewEvent] = useState({
     title: "",
     startTime: "",
     endTime: "",
+    courseId: selectedCourse.id || "",
   });
+
+  useEffect(() => {
+    getEventsForDate(selectedDate);
+  }, [selectedDate]);
+
+  useEffect(() => {
+    dispatch(fetchCourses());
+  }, []);
 
   const handleDateClick = (arg) => {
     setSelectedDate(arg.dateStr);
@@ -27,18 +41,25 @@ const AdminCalendar = ({ user }) => {
 
   const handleAddEvent = (e) => {
     e.preventDefault();
-    if (newEvent.title && newEvent.startTime && newEvent.endTime) {
+    if (newEvent.title && newEvent.startTime && newEvent.endTime && newEvent.courseId) {
       if (newEvent.endTime <= newEvent.startTime) {
         alert("End time must be later than start time!");
         return;
       }
 
+      if (selectedDate < new Date()) {
+        alert("Event can't be scheduled for past dates");
+        return;
+      }
+
       const newEventData = {
         title: newEvent.title,
-        start: `${selectedDate}T${newEvent.startTime}`,
-        end: `${selectedDate}T${newEvent.endTime}`,
+        startTime: newEvent.startTime,
+        endTime: newEvent.endTime,
+        eventDate: selectedDate,
+        courseId: selectedCourse,
       };
-      dispatch(addEvent(newEventData));
+      dispatch(createEvent(newEventData));
       setNewEvent({ title: "", startTime: "", endTime: "" });
       alert("Event added successfully!");
     } else {
@@ -46,44 +67,14 @@ const AdminCalendar = ({ user }) => {
     }
   };
 
-  const handleEditEvent = (e) => {
-    e.preventDefault();
-    if (newEvent.title && newEvent.startTime && newEvent.endTime) {
-      if (newEvent.endTime <= newEvent.startTime) {
-          alert("End time must be later than start time!");
-          return;
-      }
-
-      const updatedEvent = {
-        title: newEvent.title,
-        start: `${selectedDate}T${newEvent.startTime}`,
-        end: `${selectedDate}T${newEvent.endTime}`,
-      };
-      dispatch(editEvent({ index: editingEvent, updatedEvent }));
-      setEditingEvent(null);
-      setNewEvent({ title: "", startTime: "", endTime: "" });
-      alert("Event updated successfully!");
-    }
-  };
-
-  const handleDeleteEvent = (index) => {
+  const handleDeleteEvent = (eventId) => {
     if (window.confirm("Are you sure you want to delete this event?")) {
-      dispatch(deleteEvent(index));
+      dispatch(deleteEvent(eventId));
     }
   };
 
   const getEventsForDate = (date) => {
-    return events.filter((event) => event.start.startsWith(date));
-  };
-
-  const handleEditClick = (index, event) => {
-    setEditingEvent(index);
-    setSelectedDate(event.start.split("T")[0]);
-    setNewEvent({
-      title: event.title,
-      startTime: event.start.split("T")[1].slice(0, 5), // Extract time
-      endTime: event.end.split("T")[1].slice(0, 5),
-    });
+    dispatch(fetchEventsForDate({ date, studentId: auth.currentUser.uid }));
   };
 
   return (
@@ -103,23 +94,17 @@ const AdminCalendar = ({ user }) => {
           <div className="modal">
             <h2>Events on {selectedDate}</h2>
             <ul>
-              {getEventsForDate(selectedDate).length > 0 ? (
-                getEventsForDate(selectedDate).map((event, index) => (
+              {eventsForDate.length > 0 ? (
+                eventsForDate.map((event, index) => (
                   <li key={index}>
                     <strong>{event.title}</strong> <br />
-                    {new Date(event.start).toLocaleTimeString()} -{" "}
-                    {new Date(event.end).toLocaleTimeString()}
+                    {new Date(event.startTime).toLocaleTimeString()} -{" "}
+                    {new Date(event.endTime).toLocaleTimeString()}
                     <br />
                     {user === "admin" && (
                       <div>
                         <button
-                          onClick={() => handleEditClick(index, event)}
-                          className="edit-event-btn"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDeleteEvent(index)}
+                          onClick={() => handleDeleteEvent(event.id)}
                           className="delete-event-btn"
                         >
                           Delete
@@ -134,8 +119,8 @@ const AdminCalendar = ({ user }) => {
             </ul>
 
             {user === "admin" && (
-              <form onSubmit={editingEvent !== null ? handleEditEvent : handleAddEvent}>
-                <h3>{editingEvent !== null ? "Edit Event" : "Add New Event"}</h3>
+              <form onSubmit={handleAddEvent}>
+                <h3>"Add New Event</h3>
                 <div className="input-ctn">
                   <label>Title</label>
                   <input
@@ -170,9 +155,14 @@ const AdminCalendar = ({ user }) => {
                     required
                   />
                 </div>
-                
+                <Select
+                  options={courses.map((course) => ({ value: course.id, label: course.course_name }))}
+                  onChange={setSelectedCourse}
+                  placeholder="Select Course"
+                  className="react-select"
+                />
                 <button type="submit" className="save-event-btn">
-                  {editingEvent !== null ? "Save Changes" : "Add Event"}
+                  Add Event
                 </button>
               </form>
             )}

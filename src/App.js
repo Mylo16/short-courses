@@ -35,7 +35,7 @@ function AppContent() {
         <Route index path='/dashboard' element={<Dashboard />} />
         <Route path='/admin' element={<AdminPanel />} />
         <Route path='/courses' element={<Courses />} />
-        <Route path='/course-details' element={<CourseDetails />} />
+        <Route path='/course-details/:courseId' element={<CourseDetails />} />
       </Route>
       <Route element={<PrivateRoute userAllowed={!user} redirectTo="/dashboard" />}>
         <Route path='/' element={<Navbar user={user} />} >

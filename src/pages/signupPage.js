@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import LoadingBar from "../components/loadingBar";
 import '../css/session.css';
 import { auth, db } from "../utils/firebaseConfig";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
 export default function SignupPage() {
@@ -15,7 +15,6 @@ export default function SignupPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const [isPasswordValid, setIsPasswordValid] = useState(false);
-  // const [confirm, setConfirm] = useState('');
   const [hasUpperCase, setHasUpperCase] = useState(false);
   const [hasLowerCase, setHasLowerCase] = useState(false);
   const [hasDigit, setHasDigit] = useState(false);

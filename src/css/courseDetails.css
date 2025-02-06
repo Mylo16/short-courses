@@ -1,0 +1,126 @@
+:root {
+  --primary-bg: #fff8ee;
+  --secondary-bg: rgb(216, 1, 1);
+  --accent-bg: #2C2C2C;
+
+  --primary-text: #2C2C2C;
+  --secondary-text: #d80101;
+  --muted-text: #757575;
+
+  --primary-accent: rgb(255, 152, 0);
+  --secondary-accent: rgb(39,202,204);
+  --error-color: #FF5722;
+  --success-color: #4CAF50;
+
+  --border-color: #333333;
+
+  --hover-bg: #333333;
+  --focus-outline: #FF9800;
+}
+
+.cd-ctn {
+  padding: 5em 10px;
+}
+
+.cd-title {
+  font-size: 16px;
+  font-weight: 450;
+}
+
+.cd-description {
+  font-size: 12px;
+}
+
+.cd-lessons-ctn {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.cd-lesson {
+  box-shadow: 0px 0px 5px 0px red;
+  padding: 10px;
+  border-radius: 10px;
+  transition: height 0.3s ease-in-out;
+  height: 1.5em;
+}
+
+.cd-lesson.expanded {
+  height: 6em;
+}
+
+.cd-instructions-ctn {
+  margin-top: 2em;
+  background-color: wheat;
+  padding: 10px;
+}
+
+.cd-instructions-ctn ul {
+  list-style: initial;
+  list-style-position: outside;
+  padding-inline-start: 30px;
+  margin-block: 0;
+}
+
+.cd-instructions-ctn li {
+  margin: 0 0 10px 0;
+  font-size: 12px;
+}
+
+.cd-lesson-wrap {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.chevron-down img,
+.chevron-up img {
+  width: 20px;
+}
+
+.lesson-details {
+  display: flex;
+  gap: 2em;
+  margin-top: 1em;
+}
+
+.cd-lesson-content {
+  font-size: 14px;
+  padding: 5px;
+  border: 1px solid var(--primary-accent);
+  border-radius: 10px;
+  color: var(--primary-accent);
+  text-decoration: underline;
+}
+
+.cd-lesson-wrap.expanded::after {
+  position: absolute;
+  content: "";
+  height: 1px;
+  width: 100%;
+  background-color: #33333327;
+  bottom: 0%;
+  left: 0%;
+}
+
+
+
+.cd-lesson-wrap img {
+  transition: transform 0.3s ease;
+}
+
+.cd-lesson-wrap.expanded .cd-lesson-content {
+  max-height: 500px; /* Adjust based on content size */
+}
+
+.cd-lesson-wrap.expanded img {
+  transform: rotate(180deg); /* Rotate chevron when expanded */
+}
+
+.cd-bottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 0;
+}

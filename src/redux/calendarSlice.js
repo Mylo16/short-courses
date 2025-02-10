@@ -17,10 +17,23 @@ export const deleteEvent = createAsyncThunk('calendar/deleteEvent', async (event
   return await deleteCourseEvent(eventId);
 });
 
+function convertTo24HourFormat(time) {
+  const [hours, minutes] = time.split(/[: ]/);
+  const isPM = time.toLowerCase().includes("pm");
+  let formattedHours = parseInt(hours, 10);
+
+  if (isPM && formattedHours !== 12) formattedHours += 12;
+  if (!isPM && formattedHours === 12) formattedHours = 0;
+
+  return `${String(formattedHours).padStart(2, "0")}:${minutes}`;
+}
+
+
 const calendarSlice = createSlice({
   name: "calendar",
   initialState: {
-    events: [],
+    eventsOnCalendar: [],
+    eventsOnTimeline: [],
     eventsForDate: [],
     loading: null,
   },
@@ -32,20 +45,35 @@ const calendarSlice = createSlice({
       })
       .addCase(fetchEvents.fulfilled, (state, action) => {
         state.loading = false;
-        state.events = action.payload;
+        state.eventsOnTimeline = action.payload;
+        state.eventsOnCalendar = action.payload.map((event) => {
+          const formattedDate = new Date(event.eventDate).toISOString().split("T")[0]; // Extract date in YYYY-MM-DD
+          const startTime = convertTo24HourFormat(event.startTime);
+          const endTime = convertTo24HourFormat(event.endTime);
+      
+          return {
+            id: event.id,
+            title: event.title,
+            start: `${formattedDate}T${startTime}:00`,
+            end: `${formattedDate}T${endTime}:00`,
+          };
+        });
       })
       .addCase(fetchEvents.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
       .addCase(createEvent.fulfilled, (state, action) => {
-        state.events.push(action.payload);
+        state.eventsOnCalendar.push(action.payload);
+        state.eventsOnTimeline.push(action.payload);
       })
       .addCase(fetchEventsForDate.fulfilled, (state, action) => {
         state.eventsForDate = action.payload;
       })
       .addCase(deleteEvent.fulfilled, (state, action) => {
-        state.events.filter((event) => event.id !== action.payload);
+        state.eventsForDate.filter((event) => event.id !== action.payload);
+        state.eventsOnCalendar.filter((event) => event.id !== action.payload);
+
       })
   }
 });

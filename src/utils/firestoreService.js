@@ -1,3 +1,4 @@
+import { weekdays } from "moment/moment";
 import { db } from "./firebaseConfig";
 import {
   collection,
@@ -233,7 +234,7 @@ export const enrollUserInCourse = async (userId, courseId) => {
 
     const userRef = doc(db, "users", userId);
     await updateDoc(userRef, {
-      enrolledCourses: arrayUnion(courseId),
+      enrolledCourses: arrayUnion(doc(db, "courses", courseId)),
     });
 
     alert("User enrolled in course successfully.");
@@ -242,23 +243,21 @@ export const enrollUserInCourse = async (userId, courseId) => {
   }
 };
 
-
 export const addEvent = async (eventData) => {
-  const { title, description, eventDate, startTime, endTime, courseId } = eventData;
-
+  const { title, eventDate, startTime, endTime, courseId } = eventData;
+  console.log(eventData);
   try {
     const eventRef = collection(db, "events");
-    const courseData = (await getDoc(collection(db, "courses", courseId))).data();
-    const facilitatorData = (await getDoc(query(collection(db, "users"), where("my_course", "==", doc(db, "courses", courseId))))).data();
+    const courseData = (await getDoc(doc(db, "courses", courseId))).data();
+    const facilitatorData = (await getDocs(query(collection(db, "users"), where("my_course", "==", doc(db, "courses", courseId))))).docs[0].data();
     await addDoc(eventRef, {
       title,
-      description,
-      startTime: Timestamp.fromDate(new Date(startTime)),
-      endTime: Timestamp.fromDate(new Date(endTime)),
+      startTime: Timestamp.fromDate(new Date(`${eventDate}T${startTime}:00`)),
+      endTime: Timestamp.fromDate(new Date(`${eventDate}T${endTime}:00`)),
       eventDate: Timestamp.fromDate(new Date(eventDate)),
       facilitatorName: facilitatorData.name,
       courseId: doc(db, "courses", courseId),
-      courseName: courseData.title,
+      courseName: courseData.course_name,
     });
 
     alert("Event created successfully!");
@@ -278,19 +277,80 @@ export const getStudentEvents = async (studentId) => {
       return [];
     }
 
+    if(userDoc.data().role === "admin") {
+      const eventsRef = collection(db, "events");
+      const querySnapshot = await getDocs(eventsRef);
+
+      const allEvents = querySnapshot.docs.map((doc) => {
+        const eventData = doc.data();
+
+        const eventDate = eventData.eventDate?.toDate();
+        const startTime = eventData.startTime?.toDate();
+        const endTime = eventData.endTime?.toDate();
+
+        return {
+          id: doc.id,
+          ...eventData,
+          eventDate: eventDate?.toLocaleString("en-US", {
+            weekday: "short",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          }),
+          startTime: startTime?.toLocaleString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          endTime: endTime?.toLocaleString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        };
+      });
+
+      return allEvents;
+    } else {
+
     const enrolledCourses = userDoc.data().enrolledCourses;
 
-    const eventsRef = collection(db, "events");
-    const q = query(eventsRef, where("courseId", "in", enrolledCourses));
+    const batches = [];
+    for (let i = 0; i < enrolledCourses.length; i += 10) {
+      batches.push(enrolledCourses.slice(i, i + 10));
+    }
 
-    const querySnapshot = await getDocs(q);
+    const events = [];
 
-    const events = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    for (const batch of batches) {
+      const eventsRef = collection(db, "events");
+      const q = query(eventsRef, where("courseId", "in", batch));
+
+      const querySnapshot = await getDocs(q);
+      const batchEvents = querySnapshot.docs.map((doc) => {
+        const eventData = doc.data();
+
+        const eventDate = eventData.eventDate?.toDate();
+        const startTime = eventData.startTime?.toDate();
+        const endTime = eventData.endTime?.toDate();
+
+        return {
+          id: doc.id,
+          ...eventData,
+          eventDate: eventDate.toLocaleString('en-US', {
+            weekday: 'short',
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+          }),
+          startTime: startTime.toLocaleString('en-US', {hour: '2-digit', minute: '2-digit'}),
+          endTime: endTime.toLocaleString('en-US', {hour: '2-digit', minute: '2-digit'}),
+        };
+      });
+
+      events.push(...batchEvents);
+    }
 
     return events;
+    }
   } catch (error) {
     console.error("Error fetching events:", error);
     return [];
@@ -307,20 +367,53 @@ export const getEventsForDate = async (date, studentId) => {
       return [];
     }
 
+    if(userDoc.data().role === "role") {
+      
+    }
+
     const enrolledCourses = userDoc.data().enrolledCourses;
 
-    const eventsRef = collection(db, "events");
-    const q = query(eventsRef,
-      where("courseId", "in", enrolledCourses),
-      where("eventDate", "==", date)
-    );
+    // Split `enrolledCourses` into batches if it exceeds 10 items
+    const batches = [];
+    for (let i = 0; i < enrolledCourses.length; i += 10) {
+      batches.push(enrolledCourses.slice(i, i + 10));
+    }
+    const eventDateTimestamp = Timestamp.fromDate(new Date(`${date}T00:00:00`));
+    
+    const events = [];
 
-    const querySnapshot = await getDocs(q);
+    for (const batch of batches) {
+      const eventsRef = collection(db, "events");
+      const q = query(
+        eventsRef,
+        where("courseId", "in", batch),
+        where("eventDate", "==", eventDateTimestamp)
+      );
 
-    const events = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+      const querySnapshot = await getDocs(q);
+      const batchEvents = querySnapshot.docs.map((doc) => {
+        const eventData = doc.data();
+        
+
+        const eventDate = eventData.eventDate?.toDate();
+        const startTime = eventData.startTime?.toDate();
+        const endTime = eventData.endTime?.toDate();
+
+        return {
+          id: doc.id,
+          ...eventData,
+          eventDate: eventDate?.toLocaleString('en-US', {
+            weekday: 'short',
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+          }),
+          startTime: startTime?.toLocaleString('en-US', {hour: '2-digit', minute: '2-digit'}),
+          endTime: endTime?.toLocaleString('en-US', {hour: '2-digit', minute: '2-digit'}),
+        };
+      });
+      events.push(...batchEvents);
+    }
 
     return events;
   } catch (error) {

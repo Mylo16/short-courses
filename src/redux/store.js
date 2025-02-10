@@ -15,17 +15,19 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        // Ignore actions with non-serializable values in these paths
-        ignoredActions: [
-          'users/fetchFacilitators/fulfilled',
-          'users/fetchUsers/fulfilled',
-        ],
-        // Ignore these specific paths in the state
-        ignoredPaths: [
-          'users.facilitators',
-          'users.users',
-        ],
-      },
+      serializableCheck: false,
+        // // Ignore actions with non-serializable values in these paths
+        // ignoredActions: [
+        //   'users/fetchFacilitators/fulfilled',
+        //   'users/fetchUsers/fulfilled',
+        //   'courses/fetchCourses/fulfilled'
+        // ],
+        // // Ignore these specific paths in the state
+        // ignoredPaths: [
+        //   'users.facilitators',
+        //   'users.users',
+        //   'courses.courses.facilitator.enrolledCourses',
+        //   'courses.courses',
+        // ],
     }),
 });

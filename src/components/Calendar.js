@@ -4,50 +4,49 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { createEvent, deleteEvent, fetchEventsForDate } from "../redux/calendarSlice";
+import { createEvent, deleteEvent, fetchEvents, fetchEventsForDate } from "../redux/calendarSlice";
 import '../css/calendar.css';
 import { auth } from "../utils/firebaseConfig";
 import { fetchCourses } from "../redux/coursesSlice";
 import Select from "react-select";
+import { useNavigate } from "react-router-dom";
 
 const AdminCalendar = ({ user }) => {
   const dispatch = useDispatch();
-  const { events, eventsForDate } = useSelector((state) => state.calendar);
+  const navigate = useNavigate();
+  const { eventsOnCalendar, eventsForDate } = useSelector((state) => state.calendar);
   const { courses } = useSelector((state) => state.courses);
-  console.log(courses);
 
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [newEvent, setNewEvent] = useState({
     title: "",
     startTime: "",
     endTime: "",
-    courseId: selectedCourse.id || "",
   });
 
   useEffect(() => {
-    getEventsForDate(selectedDate);
-  }, [selectedDate]);
-
-  useEffect(() => {
     dispatch(fetchCourses());
+    dispatch(fetchEvents(auth.currentUser.uid));
   }, []);
 
   const handleDateClick = (arg) => {
+    getEventsForDate(arg.dateStr);
     setSelectedDate(arg.dateStr);
     setShowModal(true);
   };
 
-  const handleAddEvent = (e) => {
+  const handleAddEvent = async (e) => {
     e.preventDefault();
-    if (newEvent.title && newEvent.startTime && newEvent.endTime && newEvent.courseId) {
-      if (newEvent.endTime <= newEvent.startTime) {
+
+    if (newEvent.title && newEvent.startTime && newEvent.endTime && selectedCourse.value) {
+      if (new Date(new Date(`${selectedDate}T${newEvent.endTime}:00`)) <= new Date(`${selectedDate}T${newEvent.startTime}:00`)) {
         alert("End time must be later than start time!");
         return;
       }
 
-      if (selectedDate < new Date()) {
+      if (new Date(selectedDate) < new Date()) {
         alert("Event can't be scheduled for past dates");
         return;
       }
@@ -57,11 +56,12 @@ const AdminCalendar = ({ user }) => {
         startTime: newEvent.startTime,
         endTime: newEvent.endTime,
         eventDate: selectedDate,
-        courseId: selectedCourse,
+        courseId: selectedCourse.value,
       };
-      dispatch(createEvent(newEventData));
+
+      await dispatch(createEvent(newEventData));
       setNewEvent({ title: "", startTime: "", endTime: "" });
-      alert("Event added successfully!");
+      navigate(0);
     } else {
       alert("Please fill in all fields!");
     }
@@ -82,7 +82,7 @@ const AdminCalendar = ({ user }) => {
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={events}
+        events={eventsOnCalendar}
         dateClick={handleDateClick}
         eventClick={(info) => {
           handleDateClick({ dateStr: info.event.startStr.split("T")[0] });
@@ -98,8 +98,8 @@ const AdminCalendar = ({ user }) => {
                 eventsForDate.map((event, index) => (
                   <li key={index}>
                     <strong>{event.title}</strong> <br />
-                    {new Date(event.startTime).toLocaleTimeString()} -{" "}
-                    {new Date(event.endTime).toLocaleTimeString()}
+                    {event.startTime} -{" "}
+                    {event.endTime}
                     <br />
                     {user === "admin" && (
                       <div>

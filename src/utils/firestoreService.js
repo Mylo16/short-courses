@@ -184,7 +184,9 @@ export const getCourses = async () => {
         const lessons = await Promise.all(
           (courseData.lessons || []).map(async (lessonRef) => {
             const lessonDoc = await getDoc(lessonRef);
-            return lessonDoc.exists() ? { id: lessonDoc.id, ...lessonDoc.data(), courseId: lessonDoc.data().courseId.id } : null;
+            return lessonDoc.exists()
+              ? { id: lessonDoc.id, ...lessonDoc.data(), courseId: lessonDoc.data().courseId.id }
+              : null;
           })
         );
 
@@ -198,9 +200,18 @@ export const getCourses = async () => {
       })
     );
 
-    return courses;
+    const groupedCourses = courses.reduce((acc, course) => {
+      const programme = course.programme;
+      if (!acc[programme]) {
+        acc[programme] = [];
+      }
+      acc[programme].push(course);
+      return acc;
+    }, {});
+
+    return Object.values(groupedCourses);
   } catch (error) {
-    console.error("Error fetching courses:", error);
+    console.error("Error fetching and grouping courses:", error);
   }
 };
 
@@ -368,12 +379,11 @@ export const getEventsForDate = async (date, studentId) => {
     }
 
     if(userDoc.data().role === "role") {
-      
+
     }
 
     const enrolledCourses = userDoc.data().enrolledCourses;
 
-    // Split `enrolledCourses` into batches if it exceeds 10 items
     const batches = [];
     for (let i = 0; i < enrolledCourses.length; i += 10) {
       batches.push(enrolledCourses.slice(i, i + 10));
@@ -433,5 +443,46 @@ export const deleteCourseEvent = async (eventId) => {
   } catch (error) {
     console.error("Error deleting event:", error);
     alert("Error deleting event. Please try again.");
+  }
+};
+
+export const getTopEnrolledCourses = async () => {
+  try {
+    const enrollmentsSnapshot = await getDocs(collection(db, "enrollments"));
+    const enrollmentsCount = {};
+
+    enrollmentsSnapshot.forEach((doc) => {
+      const { courseId } = doc.data();
+      if (courseId) {
+        enrollmentsCount[courseId] = (enrollmentsCount[courseId] || 0) + 1;
+      }
+    });
+
+    const sortedCourses = Object.entries(enrollmentsCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3);
+
+    const topCourses = await Promise.all(
+      sortedCourses.map(async ([courseId, enrollmentCount]) => {
+        const courseDoc = await getDoc(doc(db, "courses", courseId));
+        const facilitatorData = (await getDoc(courseDoc.data().facilitatorId)).data();
+
+        if (courseDoc.exists()) {
+          const courseData = courseDoc.data();
+          return {
+            id: courseId,
+            ...courseData,
+            enrollmentCount,
+            facilitatorImg: facilitatorData.user_img,
+            facilitatorName: facilitatorData.name
+          };
+        }
+        return null;
+      })
+    );
+
+    return topCourses.filter(Boolean);
+  } catch (error) {
+    console.error("Error fetching top enrolled courses:", error);
   }
 };

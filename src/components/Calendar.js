@@ -16,7 +16,6 @@ const AdminCalendar = ({ user }) => {
   const navigate = useNavigate();
   const { eventsOnCalendar, eventsForDate } = useSelector((state) => state.calendar);
   const { courses } = useSelector((state) => state.courses);
-
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState({});
   const [showModal, setShowModal] = useState(false);

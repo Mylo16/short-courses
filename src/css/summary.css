@@ -1,0 +1,125 @@
+.summary-ctn {
+  margin-top: 5em;
+}
+
+.table-container {
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
+  margin: 2em auto;
+  padding: 2em 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff8ee;
+  
+}
+
+.table-container .table-header {
+  width: 80%;
+  margin: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background-color: rgb(204, 204, 204);
+  color: rgb(13, 13, 66);
+  font-size: 16px;
+  -webkit-box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.75);
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.377);
+  /* position: relative; */
+  
+}
+
+.table-banner1 {
+  position: absolute;
+  transform: rotate(-90deg) translateY(-5px) translateX(-2px);
+  width: 40px;
+}
+
+th {
+  font-weight: 500;
+}
+
+.table-body {
+  overflow-y: auto;
+  overflow-x: auto;
+  width: 80%;
+  margin: auto;
+  height: 100%;
+  background-color: white;
+  -webkit-box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.75);
+-moz-box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.75);
+box-shadow: inset 0px 1px 2px 1px rgba(0, 0, 0, 0.377);
+  
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+
+th, td {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #33333375;
+  width: 60px;
+}
+
+td {
+  color: rgb(16, 16, 66);
+}
+
+th.stn-data,
+td.stn-data {
+  width: 160px;
+}
+
+th.item,
+td.item {
+  width: 120px;
+}
+
+th.table-date,
+td.table-date,
+th.person,
+td.person {
+  width: 90px;
+}
+
+.table-header::-webkit-scrollbar {
+  height: 10px;
+  background-color: white;
+}
+
+.table-header::-webkit-scrollbar-thumb,
+.table-body::-webkit-scrollbar-thumb {
+  background-color: rgb(104, 97, 97);
+  border-radius: 20px;
+}
+
+.table-body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+
+
+tr:nth-child(even) {
+background-color: var(--hover-bg);
+}
+
+.table-body tr:hover {
+background-color: #ddd;
+}
+
+
+.styled-table th,
+.styled-table td {
+padding: 12px 15px;
+text-align: center;
+}
+
+.styled-table th {
+background-color: #4CAF50;
+color: white;
+}

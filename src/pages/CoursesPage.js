@@ -1,12 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import NavBar2 from '../components/NavBar2';
-import '../css/courses.css';
-import courses from '../utils/courses';
 import images from '../utils/images';
+import { useSelector } from 'react-redux';
+import '../css/courses.css';
 
 function Courses() {
 
    const navigate = useNavigate();
+   const { courses } = useSelector((state) => state.courses);
+   console.log(courses);
+
     
   return(
     <>
@@ -15,10 +18,10 @@ function Courses() {
         <div className='courses-title'>Courses</div>
         <div className='courses-msg'>Find various courses under various categories</div>
         <section className="category">
-          <div className='cat-title'>Science and Technology</div>
+          <div className='cat-title'>Health Science</div>
           <div className="yc-ctn">
           {
-            courses.science_and_technology.map((course, index) => (
+            courses[0].map((course, index) => (
               <div onClick={() => navigate('/course-details')} className='yc-card' key={index}>
                 <div className="yc-img-ctn"><img src={course.course_pic} /></div>
                 <div className="yc-summary-ctn">
@@ -28,8 +31,8 @@ function Courses() {
                 <div className="yc-name">{course.course_name}</div>
                 <div className="yc-status tp-price">GHC {course.price}</div>
                 <div className="yc-profile-ctn">
-                  <div className="yc-profile"><img src={course.lecturer_img}/></div>
-                  <div>{course.lecturer_name}</div>
+                  <div className="yc-profile"><img src={course.facilitator.user_img}/></div>
+                  <div>{course.facilitator.name}</div>
                 </div>     
               </div>
             ))
@@ -40,7 +43,7 @@ function Courses() {
           <div className='cat-title'>Social Science</div>
           <div className="yc-ctn">
           {
-            courses.social_science.map((course, index) => (
+            courses[1].map((course, index) => (
               <div className='yc-card' key={index}>
                 <div className="yc-img-ctn"><img src={course.course_pic} /></div>
                 <div className="yc-summary-ctn">
@@ -50,8 +53,8 @@ function Courses() {
                 <div className="yc-name">{course.course_name}</div>
                 <div className="yc-status tp-price">GHC {course.price}</div>
                 <div className="yc-profile-ctn">
-                  <div className="yc-profile"><img src={course.lecturer_img}/></div>
-                  <div>{course.lecturer_name}</div>
+                  <div className="yc-profile"><img src={course.facilitator.user_img}/></div>
+                  <div>{course.facilitator.name}</div>
                 </div>     
               </div>
             ))
@@ -59,10 +62,10 @@ function Courses() {
           </div>
         </section>
         <section className="category">
-          <div className='cat-title'>Agricultural Science</div>
+          <div className='cat-title'>Science and Technology</div>
           <div className="yc-ctn">
           {
-            courses.agricultural_science.map((course, index) => (
+            courses[2].map((course, index) => (
               <div className='yc-card' key={index}>
                 <div className="yc-img-ctn"><img src={course.course_pic} /></div>
                 <div className="yc-summary-ctn">
@@ -72,8 +75,8 @@ function Courses() {
                 <div className="yc-name">{course.course_name}</div>
                 <div className="yc-status tp-price">GHC {course.price}</div>
                 <div className="yc-profile-ctn">
-                  <div className="yc-profile"><img src={course.lecturer_img}/></div>
-                  <div>{course.lecturer_name}</div>
+                  <div className="yc-profile"><img src={course.facilitator.user_img}/></div>
+                  <div>{course.facilitator.name}</div>
                 </div>     
               </div>
             ))

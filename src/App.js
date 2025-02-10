@@ -11,6 +11,7 @@ import LoginPage from './pages/loginPage';
 import { AuthProvider, useAuth } from './utils/authProvider';
 import LoadingBar from './components/loadingBar';
 import AdminPanel from './pages/AdminPanel';
+import Summary from './pages/Summary';
 
 function App() {
   return(
@@ -36,6 +37,7 @@ function AppContent() {
         <Route path='/admin' element={<AdminPanel />} />
         <Route path='/courses' element={<Courses />} />
         <Route path='/course-details/:courseId' element={<CourseDetails />} />
+        <Route path='/summary' element={<Summary />} />
       </Route>
       <Route element={<PrivateRoute userAllowed={!user} redirectTo="/dashboard" />}>
         <Route path='/' element={<Navbar user={user} />} >

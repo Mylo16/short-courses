@@ -56,12 +56,16 @@ export default function NavBar2() {
             <li className={`side-link ${activeLink === 2 ? 'active' : ''}`} onClick={() => handleLinkClicked(2)}>
               <Link className="link" to="/courses">Courses</Link>
             </li>
-            <li className={`side-link ${activeLink === 4 ? 'active' : ''}`} onClick={() => handleLinkClicked(4)}>
+            <li className={`side-link ${activeLink === 3 ? 'active' : ''}`} onClick={() => handleLinkClicked(4)}>
               <Link className="link" to="/about">About Us</Link>
             </li>
-            <li className={`side-link ${user.role !== "admin" ? 'not-admin': ''} ${activeLink === 5 ? 'active' : ''}`} onClick={() => handleLinkClicked(5)}>
+            <li className={`side-link ${activeLink === 4 ? 'active' : ''}`} onClick={() => handleLinkClicked(5)}>
+              <Link className="link" to="/summary">Summary</Link>
+            </li>
+            <li className={`side-link ${user.role !== "admin" ? 'not-admin': ''} ${activeLink === 5 ? 'active' : ''}`} onClick={() => handleLinkClicked(6)}>
               <Link className="link" to="/admin">Admin Panel</Link>
             </li>
+            
             
           </ul>
         </div>

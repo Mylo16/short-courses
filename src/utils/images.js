@@ -37,9 +37,11 @@ import correct from '../assets/correct.png';
 import wrong from '../assets/wrong.png';
 import chevronUp from '../assets/chevron-up.png';
 import chevronDown from '../assets/chevron-down.png';
+import tableBanner from '../assets/table-banner.png';
 
 const images = {
   profile,
+  tableBanner,
   chevronDown,
   chevronUp,
   correct,

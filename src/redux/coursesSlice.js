@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCourses, getCourseById, addCourse, enrollUserInCourse } from "../utils/firestoreService";
+import { getCourses, getCourseById, addCourse, enrollUserInCourse, getTopEnrolledCourses } from "../utils/firestoreService";
 
 export const fetchCourses = createAsyncThunk("courses/fetchCourses", async () => {
   return await getCourses();
@@ -18,11 +18,17 @@ export const enrollInCourse = createAsyncThunk("courses/enrollInCourse", async (
   return { courseId };
 });
 
+export const fetchTopPicks = createAsyncThunk("courses/fetchTopPicks", async () => {
+  return await getTopEnrolledCourses();
+});
+
 const coursesSlice = createSlice({
   name: "courses",
   initialState: {
     courses: [],
     selectedCourse: null,
+    topPicks: [],
+    topPicksLoading: false,
     loading: false,
     error: null,
   },
@@ -42,6 +48,13 @@ const coursesSlice = createSlice({
       })
       .addCase(fetchCourseById.fulfilled, (state, action) => {
         state.selectedCourse = action.payload;
+      })
+      .addCase(fetchTopPicks.fulfilled, (state, action) => {
+        state.topPicks = action.payload;
+        state.topPicksLoading = false;
+      })
+      .addCase(fetchTopPicks.pending, (state) => {
+        state.topPicksLoading = true;
       });
   },
 });

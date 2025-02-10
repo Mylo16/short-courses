@@ -54,8 +54,13 @@
   color: wheat;
 }
 
-.ft-content-blk .main {
+.ft-content-blk .ft-main {
   font-size: 1.2em;
+}
+
+.ft-main {
+  background: linear-gradient(70deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
+  height: 40vh;
 }
 
 .ft-social-ctn {
@@ -73,4 +78,18 @@
   font-size: 10px;
   color: wheat;
   padding-bottom: 2em;
+}
+
+@media (min-width: 768px) {
+  .copyright {
+    font-size: 12px;
+  }
+
+  .ft-content-title {
+    font-size: smallt5;
+  }
+
+  .ft-content-blk {
+    font-size: 12px;
+  }
 }

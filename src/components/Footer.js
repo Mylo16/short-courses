@@ -7,7 +7,7 @@ function Footer() {
     <footer className='footer'>
       <div className='ft-content-ctn'>
         <div className='ft-content-blk'>
-          <div className='ft-content-title main'>E-Short Courses</div>
+          <div className='ft-content-title ft-main'>E-Short Courses</div>
           <div>Explore a transformative<br/> approach to skill<br/> development on our<br/>online learning platform.</div>
           <div className='ft-social-ctn'>
             <img src={images.facebook}/>

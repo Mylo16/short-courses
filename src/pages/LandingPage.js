@@ -69,8 +69,11 @@ export default function LandingPage() {
 
   return(
     <>
-      <div className="bolded-topic"><span className='span-txt'>Develop</span> your skills in a new & unique way</div>
-      <div className='banner-description'>Explore a trasformative approach to skill development on our online learning platform.</div>
+      <section className='banner-stn'>
+      <div className='bannrer-txt'>
+        <div className="bolded-topic"><span className='span-txt'>Develop</span> your skills in a new & unique way</div>
+        <div className='banner-description'>Explore a trasformative approach to skill development on our online learning platform.</div>
+      </div>
       <div className='banner-outline'>
         <div className='banner-container'>
           <img src={images.banner} alt='landing-banner' />
@@ -79,6 +82,7 @@ export default function LandingPage() {
         <div className='txt-bot2'>10+ Online Courses</div>
         <div className='txt-bot3'>Learn anywhere😁</div>
       </div>
+      </section>
       <div className='banner-btns'>
         <button className='enroll-btn'>Enroll Now</button>
         <button className='free-btn'>Free Trial</button>
@@ -282,8 +286,9 @@ export default function LandingPage() {
               Absolutely transformative experience!
             </div>
           </div>
-          <button className='tes-btn'>See All</button>
         </div>
+        <button className='tes-btn'>See All</button>
+
       </section>
       <section className="contact-stn">
         <div className="cs-content-ctn">

@@ -205,6 +205,7 @@
   flex-direction: column;
   gap: 2em;
   margin-top: 2em;
+  margin-bottom: 3em;
 }
 
 .students {
@@ -215,6 +216,8 @@
 
 .students img {
     width: 160px;
+    width: 40%;
+    max-width: 270px;
 }
 
 .students-row1,
@@ -222,6 +225,7 @@
   display: flex;
   opacity: 0;
   transition: opacity 0.5s ease-out;
+  justify-content: center;
 }
 
 .red-stu,
@@ -337,6 +341,7 @@
   border-radius: 15px;
   background-color: var(--primary-bg);
   width: 70%;
+  max-width: 250px;
   padding: 10px;
 }
 
@@ -505,6 +510,7 @@
 
 .tes-card {
   width: 60%;
+  max-width: 300px;
   background-color: var(--primary-bg);
   border-radius: 15px;
   padding: 20px;
@@ -561,6 +567,12 @@
 .tes-stu-message {
   font-size: 10px;
   margin-top: 10px;
+}
+
+.tes-btn {
+  margin: 2em auto;
+  display: flex;
+  text-align: center;
 }
 
 /***** GET IN TOUCH *****/
@@ -637,8 +649,64 @@
   flex-direction: column;
   align-items: center;
   width: 80%;
-  margin: auto;
+  max-width: 500px;
+  margin: 3em auto;
   border-radius: 20px;
   background: linear-gradient(40deg, rgba(255,88,88,1) 0%, rgba(39,202,204,1) 100%);
 }
 
+@media (min-width: 768px) {
+  .banner-stn {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: auto;
+  }
+
+  .banner-txt {
+    width: 60%;
+  }
+
+  .banner-outline {
+    /* width: 40%; */
+  }
+
+  .banner-btns {
+    justify-content: flex-start;
+    gap: 2em;
+    width: 60%;
+  }
+  .gallery-view {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .popular-courses-ctn {
+    padding: 4em 0;
+  }
+
+  .course-card-ctn {
+    flex-direction: row;
+    justify-content: center;
+    gap: 2em;
+  }
+
+  .pc-description {
+    margin-bottom: 3em;
+  }
+
+  .tes-card-ctn {
+    flex-direction: row;
+    justify-content: centerd;
+  }
+
+  .tes-description {
+    margin-bottom: 2em;
+  }
+
+  .tes-title {
+    font-size: 1.5em;
+    margin-top: 2em;
+  }
+}

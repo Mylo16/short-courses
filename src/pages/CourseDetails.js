@@ -1,28 +1,36 @@
 import { useParams } from "react-router-dom";
 import LoadingBar from "../components/loadingBar";
 import NavBar2 from "../components/NavBar2";
-import { getCourseById } from "../utils/firestoreService";
 import { openQuizForm } from "../utils/formPrefill";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCourseById } from "../redux/coursesSlice";
 import "../css/courseDetails.css";
 import images from "../utils/images";
+import { fetchCompletedLessons } from "../redux/enrollmentsSlice";
+import { auth } from "../utils/firebaseConfig";
 
 function CourseDetails() {
-  const [course, setCourse] = useState({});
   const { courseId } = useParams();
   const dispatch = useDispatch();
   const { selectedCourse } = useSelector((state) => state.courses);
+  const { completedLessons } = useSelector((state) => state.enrollments);
 
   useEffect(() => {
     dispatch(fetchCourseById(courseId));
+    dispatch(fetchCompletedLessons({ userId: auth.currentUser.uid, courseId }));
   }, [courseId]);
+
 
   const [expandedLesson, setExpandedLesson] = useState(null);
 
   const toggleLesson = (lessonId) => {
     setExpandedLesson(expandedLesson === lessonId ? null : lessonId);
+  };
+
+  const isQuizPassed = (lessonId) => {
+    const lesson = completedLessons.find((l) => l.lessonId === lessonId);
+    return lesson?.quizPassed || false;
   };
 
   if (!selectedCourse) {
@@ -52,6 +60,7 @@ function CourseDetails() {
             onClick={() => toggleLesson(lesson.id)}
           >
             <div>{index + 1}. {lesson.title}</div>
+            {isQuizPassed(lesson.id) && <span className="quiz-passed">Completed: ✅</span>}
             <div className="chevron-down">
               <img src={images.chevronDown} alt="Chevron Down" />
             </div>
@@ -59,7 +68,7 @@ function CourseDetails() {
           {expandedLesson === lesson.id && (
             <div className="lesson-details">
               <a href={lesson.content} className="cd-lesson-content">Click to open Lesson</a>
-              <button onClick={() => openQuizForm(lesson.quizUrl, selectedCourse?.id, lesson)} type="button">
+              <button className="cd-lesson-btn" onClick={() => openQuizForm(lesson.quizUrl, selectedCourse?.id, lesson)} type="button">
                 Take Quiz
               </button>
             </div>

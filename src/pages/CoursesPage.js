@@ -1,15 +1,21 @@
 import { useNavigate } from 'react-router-dom';
 import NavBar2 from '../components/NavBar2';
 import images from '../utils/images';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import '../css/courses.css';
+import { fetchCourses } from '../redux/coursesSlice';
+import { useEffect } from 'react';
+import LoadingBar from '../components/loadingBar';
 
 function Courses() {
 
-   const navigate = useNavigate();
-   const { courses } = useSelector((state) => state.courses);
-   console.log(courses);
+  const navigate = useNavigate();
+  const { courses, loading } = useSelector((state) => state.courses);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(fetchCourses());
+  }, []);
     
   return(
     <>
@@ -19,13 +25,15 @@ function Courses() {
         <div className='courses-msg'>Find various courses under various categories</div>
         <section className="category">
           <div className='cat-title'>Health Science</div>
+          {loading ? 
+          <LoadingBar /> : (
           <div className="yc-ctn">
           {
-            courses[0].map((course, index) => (
-              <div onClick={() => navigate('/course-details')} className='yc-card' key={index}>
+            courses[0]?.map((course, index) => (
+              <div onClick={() => navigate(`/course-info/${course.id}`)} className='yc-card' key={index}>
                 <div className="yc-img-ctn"><img src={course.course_pic} /></div>
                 <div className="yc-summary-ctn">
-                  <div>▶️ {course.videos}</div>
+                  <div>▶️ {course.numVideos} videos</div>
                   <div>⌚ {course.duration}</div>
                 </div>
                 <div className="yc-name">{course.course_name}</div>
@@ -38,16 +46,19 @@ function Courses() {
             ))
           }
           </div>
+          )}
         </section>
         <section className="category">
           <div className='cat-title'>Social Science</div>
+          {loading ?
+          <LoadingBar /> : (
           <div className="yc-ctn">
           {
-            courses[1].map((course, index) => (
-              <div className='yc-card' key={index}>
+            courses[1]?.map((course, index) => (
+              <div onClick={() => navigate(`/course-info/${course.id}`)} className='yc-card' key={index}>
                 <div className="yc-img-ctn"><img src={course.course_pic} /></div>
                 <div className="yc-summary-ctn">
-                  <div>▶️ {course.videos}</div>
+                  <div>▶️ {course.numVideos} videos</div>
                   <div>⌚ {course.duration}</div>
                 </div>
                 <div className="yc-name">{course.course_name}</div>
@@ -60,16 +71,19 @@ function Courses() {
             ))
           }
           </div>
+          )}
         </section>
         <section className="category">
           <div className='cat-title'>Science and Technology</div>
+          {loading ?
+          <LoadingBar /> : (
           <div className="yc-ctn">
           {
-            courses[2].map((course, index) => (
-              <div className='yc-card' key={index}>
+            courses[2]?.map((course, index) => (
+              <div onClick={() => navigate(`/course-info/${course.id}`)} className='yc-card' key={index}>
                 <div className="yc-img-ctn"><img src={course.course_pic} /></div>
                 <div className="yc-summary-ctn">
-                  <div>▶️ {course.videos}</div>
+                  <div>▶️ {course.numVideos} videos</div>
                   <div>⌚ {course.duration}</div>
                 </div>
                 <div className="yc-name">{course.course_name}</div>
@@ -82,6 +96,7 @@ function Courses() {
             ))
           }
           </div>
+          )}
         </section>
         
       </div>

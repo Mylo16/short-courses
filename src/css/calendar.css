@@ -1,6 +1,6 @@
 /* Base styles for the calendar container */
 .calendar-container {
-  width: 90%;
+  width: 100%;
   margin: auto;
   padding: 20px;
   box-sizing: border-box;
@@ -151,4 +151,37 @@ tr .fc-col-header-cell-cushion {
   .delete-event-btn {
     background-color: #dc3545;
     color: white;
+  }
+
+  .fc {
+    padding: 20px;
+  }
+
+  .calendar-title {
+    font-size: 1.2em;
+    font-weight: 450;
+    margin: 3em 0 1em;
+  }
+
+  @media (min-width: 768px) and (max-width: 1200px) {
+    .calendar-container {
+      padding-left: 25%;
+      width: 90%;
+    }
+  }
+
+
+  @media (min-width: 1201px) {
+    .calendar-container {
+      padding-left: 25%;
+      width: 90%;
+      margin: 0;
+      max-width: 1700px;
+      padding-right: 0;
+    }
+
+    .fc {
+      height: 50vh;
+      padding: 1em 5em;
+    }
   }

@@ -4,6 +4,8 @@ import coursesReducer from "./coursesSlice";
 import usersReducer from "./usersSlice";
 import lessonsReducer from "./lessonsSlice";
 import enrollmentsReducer from "./enrollmentsSlice";
+import attendanceReducer from "./attendanceSlice";
+import videosReducer from "./videosSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     courses: coursesReducer,
     users: usersReducer,
     lessons: lessonsReducer,
+    attendance: attendanceReducer,
+    videos: videosReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

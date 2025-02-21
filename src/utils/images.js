@@ -38,12 +38,27 @@ import wrong from '../assets/wrong.png';
 import chevronUp from '../assets/chevron-up.png';
 import chevronDown from '../assets/chevron-down.png';
 import tableBanner from '../assets/table-banner.png';
+import noData from '../assets/No Data.mp4';
+import summary from '../assets/summary.png';
+import certificateIcon from '../assets/certificate.png';
+import admin from '../assets/admin.png';
+import dashboard from '../assets/dashboard.png';
+import aboutUs from '../assets/about-us.png';
+import courses from '../assets/courses.png';
+
 
 const images = {
   profile,
   tableBanner,
   chevronDown,
   chevronUp,
+  noData,
+  certificateIcon,
+  summary,
+  admin,
+  dashboard,
+  aboutUs,
+  courses,
   correct,
   wrong,
   google,
@@ -59,6 +74,7 @@ const images = {
   lec2,
   lec3,
   lec4,
+  card,
   card1,
   card2,
   card3,

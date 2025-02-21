@@ -71,6 +71,7 @@
 .cd-lesson-wrap {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   position: relative;
 }
 
@@ -86,12 +87,16 @@
 }
 
 .cd-lesson-content {
-  font-size: 14px;
+  font-size: 12px;
   padding: 5px;
   border: 1px solid var(--primary-accent);
   border-radius: 10px;
   color: var(--primary-accent);
   text-decoration: underline;
+}
+
+.cd-lesson-btn {
+  font-size: 12px;
 }
 
 .cd-lesson-wrap.expanded::after {
@@ -123,4 +128,8 @@
   bottom: 0;
   width: 100%;
   margin-bottom: 0;
+}
+
+.quiz-passed {
+  font-size: 12px;
 }

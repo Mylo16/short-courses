@@ -15,7 +15,7 @@ const AdminCalendar = ({ user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { eventsOnCalendar, eventsForDate } = useSelector((state) => state.calendar);
-  const { courses } = useSelector((state) => state.courses);
+  const { allCourses } = useSelector((state) => state.courses);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -78,6 +78,7 @@ const AdminCalendar = ({ user }) => {
 
   return (
     <div className="calendar-container">
+      <div className="calendar-title">Calendar of Events</div>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -117,7 +118,7 @@ const AdminCalendar = ({ user }) => {
               )}
             </ul>
 
-            {user === "admin" && (
+            {user.role === "admin" && (
               <form onSubmit={handleAddEvent}>
                 <h3>"Add New Event</h3>
                 <div className="input-ctn">
@@ -155,7 +156,7 @@ const AdminCalendar = ({ user }) => {
                   />
                 </div>
                 <Select
-                  options={courses.map((course) => ({ value: course.id, label: course.course_name }))}
+                  options={allCourses.map((course) => ({ value: course.id, label: course.course_name }))}
                   onChange={setSelectedCourse}
                   placeholder="Select Course"
                   className="react-select"

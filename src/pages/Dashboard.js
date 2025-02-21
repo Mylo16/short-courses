@@ -8,24 +8,29 @@ import AdminCalendar from "../components/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../utils/firebaseConfig";
 import { fetchEnrollments } from "../redux/enrollmentsSlice";
-import { fetchCourses, fetchTopPicks } from "../redux/coursesSlice";
+import { fetchRecentCourse, fetchTopPicks, updateRecent } from "../redux/coursesSlice";
 import { fetchEvents } from "../redux/calendarSlice";
 import LoadingBar from "../components/loadingBar";
+import { createUserAttendance, fetchUserAttendance, updateUserAttendance } from "../redux/attendanceSlice";
+import { fetchCurrentUser } from "../redux/usersSlice";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { enrolledCourses, status } = useSelector((state) => state.enrollments);
-  const { topPicks, topPicksLoading } = useSelector((state) => state.courses);
+  const { enrolledCourses, activeCourses, completedCourses } = useSelector((state) => state.enrollments);
+  const { topPicks, topPicksLoading, recentCourse } = useSelector((state) => state.courses);
   const { eventsOnTimeline, loading } = useSelector((state) => state.calendar);
+  const { currentUser } = useSelector((state) => state.users);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    
     dispatch(fetchEnrollments(auth.currentUser.uid));
-    dispatch(fetchCourses());
     dispatch(fetchEvents(auth.currentUser.uid));
     dispatch(fetchTopPicks());
-
+    dispatch(fetchRecentCourse(auth.currentUser.uid));
+    dispatch(fetchUserAttendance(auth.currentUser.uid));
+    dispatch(fetchCurrentUser(auth.currentUser.uid));
+    dispatch(fetchUserAttendance(auth.currentUser.uid));
   }, []);
 
   
@@ -41,26 +46,80 @@ export default function Dashboard() {
     };
   }, [navigate]);
 
-  const handleCourseClick = (courseId) => {
-    navigate(`/course-details/${courseId}`);
-  }
+  const handleCourseClick = async (course) => {
+    await dispatch(updateRecent({ userId: auth.currentUser.uid, courseData: course }));
+    navigate(`/course-details/${course.id}`);
+  };
 
-  const joinZoomClass = (zoomUrl) => {
-    window.location.href = zoomUrl;
-  }
+  const joinZoomClass = async (zoomUrl, eventId) => {
+    try {
+    await dispatch(createUserAttendance({ eventId, userData: currentUser }));
+    console.log(auth.currentUser.uid);
+    window.open(zoomUrl, "_blank");
+    } catch (error) {
+      console.error("error joining zoom class:", error);
+    }
+  };
 
   return(
-    <>
+    <main className="main-view">
+    <section className="content-view">
       <NavBar2 />
       <div className="dashboard-ctn">
         <section className="timeline-stn">
-          <div className="welcome-msg">Welcome back, Richard 👋</div>
-
+          <div className="welcome-msg">Welcome back, {currentUser.name} 👋</div>
+          <div className="yc-header">Your Courses</div>
+          <div className='toggle-stn'>
+            <div className="toggle-stn-ctn">
+              <div className="tsc-main">
+                <div onClick={() => setIsActive(true)} className={`active-stn ${isActive ? 'highlight': ''}`}>Active</div>
+                <div onClick={() => setIsActive(false)} className={`completed-stn ${!isActive ? 'highlight': ''}`}>Completed</div>
+              </div>
+            </div>
+          </div>
+          {isActive ? (
+            <div className="yc-container">
+              {activeCourses.map((course, index) => (
+                <div onClick={() => navigate(`/course-details/${course.id}`)} key={index} className="yc-item">
+                  <div className="yc-left">
+                    <img src={course.course_icon} alt="course"/>
+                    <div className="yc-course-ctn">
+                      <div className="yc-course-name">{course.course_name}</div>
+                      <div className="yc-message">Click to continue with course...</div>
+                    </div>
+                  </div>
+                  <div className="yc-right">
+                    <CircleProgressBar percentage={course.progress}/>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ):(
+            <div className="yc-container">
+              {completedCourses.map((course, index) => (
+                <div key={index} className="yc-item completed">
+                  <div className="yc-left">
+                    <img src={course.course_icon} alt="course"/>
+                    <div className="yc-course-ctn">
+                      <div className="yc-course-name">{course.course_name}</div>
+                      <div className="yc-message">Congratulations Pal 🎉! Your certificate is ready.</div>
+                    </div>                  
+                  </div>
+                  <div className="yc-right">
+                    <div onClick={() => navigate(`/certificate/${course.id}`)} className="yc-cert-ctn">
+                      <img src={images.certificateIcon}/>
+                      <div className="view-cert">View Certificate</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="tl-header">Timeline</div>
           <div className="tl-description">See below links for your next classes or activities</div>
           <div className="tl-ctn">
             {loading ?
-              <LoadingBar /> : 
+              <LoadingBar /> :
               eventsOnTimeline.map((event, index) => (
                 <div key={index} className="tl-card">
                   <div className="tl-cat">{event.title}</div>
@@ -77,36 +136,18 @@ export default function Dashboard() {
                     <div className="tl-profile"><img src={event.facilitatorImage}/></div>
                     <div>{event.facilitatorName}</div>
                   </div>
-                  <button onClick={() => joinZoomClass(event.zoomLink)} type="button">Join Now</button>
+                  <div className="tl-btn-ctn">
+                    <button onClick={() => joinZoomClass(event.zoomLink, event.id)} type="button">Join Now</button>
+                    {currentUser.role === "admin" && (
+                      <button onClick={() => dispatch(updateUserAttendance(event.id))} type="button">Mark Attendance</button>
+                    )}
+                  </div>
                 </div>
               ))
             }
           </div>
         </section>
-        <section className="your-courses">
-          
-          {enrolledCourses.length > 0 && (<div className="yc-title">Your Courses</div>)}
-          <div className="yc-ctn">
-          {enrolledCourses && enrolledCourses.map((course, index) => (
-              <div key={index} onClick={() => handleCourseClick(course.id)} className="yc-card">
-                <div className="yc-img-ctn"><img src={course.course_pic} alt="course-pic"/></div>
-                <div className="yc-summary-ctn">
-                  <div>▶️ {course.numVideos} videos</div>
-                  <div>⌚ {course.duration}</div>
-                </div>
-                <div className="yc-name">{course.course_name}</div>
-                <div className="yc-status-ctn">
-                  <div className="yc-status">Enrolled</div>
-                  <CircleProgressBar percentage={course.progress} />
-                </div>
-                <div className="yc-profile-ctn">
-                  <div className="yc-profile"><img src={course.facilitatorImage}/></div>
-                  <div>{course.facilitatorName}</div>
-                </div>
-              </div>
-          ))}
-          </div>
-        </section>
+
         <section className="courses-stn">
           <div className="yc-title-ctn">
             <div className="yc-title">Top Picks</div>
@@ -134,7 +175,7 @@ export default function Dashboard() {
           </div>
         </section>
         <section className="calendar-stn">
-          <AdminCalendar user="admin" />
+          <AdminCalendar user={currentUser} />
         </section>
         <div className='logo-strike bottom'>
           <img className='strike-mob' src={images.logo2}/>
@@ -144,6 +185,7 @@ export default function Dashboard() {
           <img className='strike-pc' src={images.logo2}/>
         </div>
       </div>
-    </>
+    </section>
+    </main>
   );
 }

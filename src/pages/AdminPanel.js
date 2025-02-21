@@ -8,6 +8,7 @@ import { enrollUser } from "../redux/enrollmentsSlice";
 import { createCourse, fetchCourses } from "../redux/coursesSlice";
 import { createLesson } from "../redux/lessonsSlice";
 import "../css/AdminPanel.css";
+import { createVideo } from "../redux/videosSlice";
 
 const AdminPanel = () => {
   const [courseData, setCourseData] = useState({
@@ -31,13 +32,19 @@ const AdminPanel = () => {
     mappingLessonId: "",
   });
 
+  const [videoData, setVideoData] = useState({
+    title: "",
+    videoUrl: "",
+    courseId: "",
+  });
+
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { courses } = useSelector((state) => state.courses);
+  const { allCourses } = useSelector((state) => state.courses);
   const { facilitators, users } = useSelector((state) => state.users);
 
   // Fetch data when the component mounts
@@ -57,6 +64,11 @@ const AdminPanel = () => {
     setLessonData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleVideoChange = (e) => {
+    const { name, value } = e.target;
+    setVideoData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleCourseSubmit = async (e) => {
     e.preventDefault();
     console.log(courseData);
@@ -73,6 +85,17 @@ const AdminPanel = () => {
       alert("Please select a course first.");
     }
   };
+
+  const handleVideoSubmit = async (e) => {
+    e.preventDefault();
+    if (videoData.courseId) {
+      await dispatch(createVideo(videoData));
+      navigate(0);
+    } else {
+      alert("Please select a course first.");
+    }
+  };
+
 
   const handleEnrollSubmit = async (e) => {
     e.preventDefault();
@@ -186,7 +209,7 @@ const AdminPanel = () => {
               required
             >
               <option value="">Select Course</option>
-              {courses.map((course) => (
+              {allCourses.map((course) => (
                 <option key={course.id} value={course.id}>
                   {course.course_name}
                 </option>
@@ -253,12 +276,47 @@ const AdminPanel = () => {
               className="react-select"
             />
             <Select
-              options={courses.map((course) => ({ value: course.id, label: course.course_name }))}
+              options={allCourses.map((course) => ({ value: course.id, label: course.course_name }))}
               onChange={setSelectedCourse}
               placeholder="Select Course"
               className="react-select"
             />
             <button type="submit">Enroll User</button>
+          </form>
+        </div>
+        <div className="ap-form-container">
+          <h3>Add New Video</h3>
+          <form onSubmit={handleVideoSubmit} className="ap-form">
+            <select
+              name="courseId"
+              value={videoData.courseId}
+              onChange={handleVideoChange}
+              required
+            >
+              <option value="">Select Course</option>
+              {allCourses.map((course) => (
+                <option key={course.id} value={course.id}>
+                  {course.course_name}
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              name="title"
+              placeholder="Video Title"
+              value={videoData.title}
+              onChange={handleVideoChange}
+              required
+            />
+             <input
+              type="text"
+              name="videoUrl"
+              placeholder="Video URL"
+              value={videoData.videoUrl}
+              onChange={handleVideoChange}
+              required
+            />
+            <button type="submit">Add Video</button>
           </form>
         </div>
       </div>

@@ -1,0 +1,106 @@
+:root {
+  --primary-bg: #fff8ee;
+  --secondary-bg: rgb(216, 1, 1);
+  --accent-bg: #2C2C2C;
+
+  --primary-text: #2C2C2C;
+  --secondary-text: #d80101;
+  --muted-text: #757575;
+
+  --primary-accent: rgb(255, 152, 0);
+  --secondary-accent: rgb(39,202,204);
+  --error-color: #FF5722;
+  --success-color: #4CAF50;
+
+  --border-color: #333333;
+
+  --hover-bg: #333333;
+  --focus-outline: #FF9800;
+}
+
+.course-details {
+  max-width: 800px;
+  margin: auto;
+  padding: 4em 20px;
+}
+
+.cd-ctn {
+    gap: 3em;
+  }
+
+  .cd-pic img {
+    width: 100%;
+    max-width: 400px;
+  }
+
+.cd-info {
+  font-size: 14px;
+}
+
+.instructor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.instructor img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.enroll-btn {
+  padding: 10px;
+  border: 1px solid var(--primary-accent);
+  cursor: pointer;
+}
+
+.enroll-btn:hover {
+  background: var(--secondary-text);
+}
+
+.video-embedder {
+  width: 100%;
+  max-width: 800px;
+  display: block;
+  aspect-ratio: 16 / 9;
+  margin-top: 1em;
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  .course-details {
+    padding-left: 30%;
+    padding-top: 5.8em;
+  }
+
+  .cd-ctn {
+    display: flex;
+    gap: 3em;
+  }
+
+  .cd-pic img {
+    width: 100%;
+  }
+
+}
+
+@media (min-width: 1201px) {
+  .course-details {
+    width: 90%;
+    max-width: 1700px;
+    box-sizing: border-box;
+    margin: 0;
+    padding-left: 25%;
+    padding-top: 5.8em;
+  }
+
+  .cd-ctn {
+    display: flex;
+    gap: 3em;
+  }
+
+  .cd-pic img {
+    width: 80%;
+  }
+
+}

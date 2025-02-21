@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCourses, getCourseById, addCourse, enrollUserInCourse, getTopEnrolledCourses } from "../utils/firestoreService";
+import { getCourses, getCourseById, addCourse, enrollUserInCourse, getTopEnrolledCourses, getRecentCourse, updateRecentCourse } from "../utils/firestoreService";
 
 export const fetchCourses = createAsyncThunk("courses/fetchCourses", async () => {
   return await getCourses();
@@ -22,14 +22,24 @@ export const fetchTopPicks = createAsyncThunk("courses/fetchTopPicks", async () 
   return await getTopEnrolledCourses();
 });
 
+export const fetchRecentCourse = createAsyncThunk("courses/fetchRecentCourse", async (userId) => {
+  return await getRecentCourse(userId);
+});
+
+export const updateRecent = createAsyncThunk("courses/updateRecent", async ({userId, courseData}) => {
+  return await updateRecentCourse(userId, courseData);
+});
+
 const coursesSlice = createSlice({
   name: "courses",
   initialState: {
     courses: [],
+    recentCourse: {},
     selectedCourse: null,
     topPicks: [],
+    allCourses: [],
     topPicksLoading: false,
-    loading: false,
+    loading: null,
     error: null,
   },
   reducers: {},
@@ -41,13 +51,27 @@ const coursesSlice = createSlice({
       .addCase(fetchCourses.fulfilled, (state, action) => {
         state.loading = false;
         state.courses = action.payload;
+        state.allCourses = action.payload.flat();
       })
       .addCase(fetchCourses.rejected, (state, action) => {
-        state.loading = false;
+        state.loading = null;
         state.error = action.error.message;
+      })
+      .addCase(fetchRecentCourse.fulfilled, (state, action) => {
+        state.recentCourse = action.payload;
+      })
+      .addCase(updateRecent.fulfilled, (state, action) => {
+        state.recentCourse = action.payload;
       })
       .addCase(fetchCourseById.fulfilled, (state, action) => {
         state.selectedCourse = action.payload;
+      })
+      .addCase(fetchCourseById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchCourseById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
       })
       .addCase(fetchTopPicks.fulfilled, (state, action) => {
         state.topPicks = action.payload;

@@ -1,9 +1,13 @@
 // src/redux/usersSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getUsers, getFacilitators, getFacilitatorByCourse } from '../utils/firestoreService';
+import { getUsers, getFacilitators, getFacilitatorByCourse, getCurrentUser } from '../utils/firestoreService';
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   return await getUsers();
+});
+
+export const fetchCurrentUser = createAsyncThunk('users/fetchCurrentUser', async (userId) => {
+  return await getCurrentUser(userId);
 });
 
 export const fetchFacilitators = createAsyncThunk('users/fetchFacilitators', async () => {
@@ -18,6 +22,7 @@ const usersSlice = createSlice({
   name: 'users',
   initialState: {
     users: [],
+    currentUser: {},
     facilitators: [],
     facilitatorByCourse: null,
     status: 'idle',
@@ -36,6 +41,10 @@ const usersSlice = createSlice({
       })
       .addCase(fetchFacilitatorByCourseId.fulfilled, (state, action) => {
         state.facilitatorByCourse = action.payload;
+        state.status = 'succeeded';
+      })
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        state.currentUser = action.payload;
         state.status = 'succeeded';
       })
       .addMatcher((action) => action.type.endsWith('/pending'), (state) => {

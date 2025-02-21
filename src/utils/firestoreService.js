@@ -14,6 +14,7 @@ import {
   Timestamp,
   deleteDoc,
 } from "firebase/firestore";
+import axios from "axios";
 
 export const addCourse = async (courseData) => {
   const { name, pic, duration, numVideos, price, description, facilitatorId, programme } = courseData;
@@ -52,7 +53,12 @@ export const addLesson = async (lessonData) => {
   const {title, content, quizUrl, courseId, mappingUserId, mappingCourseId, mappingLessonId} = lessonData;
   try {
     const lessonsRef = collection(db, "lessons");
-    const q = query(lessonsRef, where("title", "==", title));
+    const q = query(
+      lessonsRef,
+      where("title", "==", title),
+      where("courseId", "==", doc(db, "courses", courseId))
+    );
+
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
@@ -79,6 +85,51 @@ export const addLesson = async (lessonData) => {
   }
 };
 
+export const addVideo = async (videoData) => {
+  const {title, videoUrl, courseId} = videoData;
+  try {
+    const videosRef = collection(db, "videos");
+    const q = query(
+      videosRef,
+      where("title", "==", title),
+      where("courseId", "==", doc(db, "courses", courseId))
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      alert(`Video with title ${title} already exists.`);
+      return;
+    }
+
+    const videoRef = doc(collection(db, "videos"));
+    await setDoc(videoRef, {
+      title,
+      video_url: videoUrl,
+      courseId: doc(db, "courses", courseId),
+    });
+
+    await updateDoc(doc(db, "courses", courseId), {
+      videos: arrayUnion(videoRef),
+    });
+
+    alert("Videos created successfully");
+    return videoRef.id;
+  } catch (error) {
+    console.error("Error adding video:", error);
+  }
+};
+
+export const getCourseVideos = async (courseId) => {
+  const videos = (await getDocs(query(collection(db, "videos"), where("courseId", "==", doc(db, "courses", courseId))))).docs.map((doc) => (
+    {
+      ...doc.data()
+    }
+  ));
+  console.log(videos);
+  return videos
+}
+
 export const getCollection = async (collectionName, filter = null) => {
   try {
     const colRef = filter ? query(collection(db, collectionName), filter) : collection(db, collectionName);
@@ -89,6 +140,23 @@ export const getCollection = async (collectionName, filter = null) => {
   }
 };
 
+
+export const getCurrentUser = async (userId) => {
+  try {
+    const userRef = doc(db, "users", userId); 
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) {
+      return userDoc.data();
+    } else {
+      console.error("No such user document found!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw error;
+  }
+};
+
 export const getUsers = () => getCollection("users");
 
 export const getFacilitators = () => getCollection("users", where("role", "==", "facilitator"));
@@ -96,6 +164,16 @@ export const getFacilitators = () => getCollection("users", where("role", "==", 
 export const getFacilitatorByCourse = (courseId) => getCollection("users", where("my_course", "==", doc(db, "courses", courseId)));
 
 export const getLessonsByCourse = (courseId) => getCollection("lessons", where("courseId", "==", doc(db, "courses", courseId)));
+
+export const getCompletedLessons = async (userId, courseId) => {
+  try {
+    const enrollmentData = (await getDoc(doc(db, "enrollments", `${userId}_${courseId}`))).data();
+    const completedLessons = enrollmentData.completedLessons;
+    return completedLessons;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export const fetchEnrolledCourses = async (userId) => {
   try {
@@ -255,7 +333,7 @@ export const enrollUserInCourse = async (userId, courseId) => {
 };
 
 export const addEvent = async (eventData) => {
-  const { title, eventDate, startTime, endTime, courseId } = eventData;
+  const { title, eventDate, startTime, endTime, courseId, zoomLink, zoomMeetingId } = eventData;
   console.log(eventData);
   try {
     const eventRef = collection(db, "events");
@@ -269,6 +347,8 @@ export const addEvent = async (eventData) => {
       facilitatorName: facilitatorData.name,
       courseId: doc(db, "courses", courseId),
       courseName: courseData.course_name,
+      zoomLink,
+      zoomMeetingId
     });
 
     alert("Event created successfully!");
@@ -378,9 +458,63 @@ export const getEventsForDate = async (date, studentId) => {
       return [];
     }
 
-    if(userDoc.data().role === "role") {
+    if (userDoc.data().role === "admin") {
+      console.log(userDoc.data().role);
+      const coursesSnapshot = await getDocs(collection(db, "courses"));
+      const courses = coursesSnapshot.docs.map((doc) => doc.id);
+      const courseRefs = courses.map((courseId) => doc(db, "courses", courseId));
+    
+      const batches = [];
+      for (let i = 0; i < courseRefs.length; i += 10) {
+        batches.push(courseRefs.slice(i, i + 10));
+      }
+    
+      const eventDateTimestamp = Timestamp.fromDate(new Date(`${date}T00:00:00`));
+    
+      const events = [];
+      console.log(batches);
+    
+      for (const batch of batches) {
+        const eventsRef = collection(db, "events");
+        const q = query(
+          eventsRef,
+          where("courseId", "in", batch),
+          where("eventDate", "==", eventDateTimestamp)
+        );
+        const querySnapshot = await getDocs(q);
+        console.log("Query Results:", querySnapshot.docs.map((doc) => doc.id));
 
-    }
+        const batchEvents = querySnapshot.docs.map((doc) => {
+          const eventData = doc.data();
+    
+          const eventDate = eventData.eventDate?.toDate();
+          const startTime = eventData.startTime?.toDate();
+          const endTime = eventData.endTime?.toDate();
+    
+          return {
+            id: doc.id,
+            ...eventData,
+            eventDate: eventDate?.toLocaleString("en-US", {
+              weekday: "short",
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            }),
+            startTime: startTime?.toLocaleString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            endTime: endTime?.toLocaleString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          };
+        });
+        events.push(...batchEvents);
+      }
+    
+      return events;
+    }  else {
 
     const enrolledCourses = userDoc.data().enrolledCourses;
 
@@ -426,6 +560,7 @@ export const getEventsForDate = async (date, studentId) => {
     }
 
     return events;
+    }
   } catch (error) {
     console.error("Error fetching events:", error);
     return [];
@@ -486,3 +621,121 @@ export const getTopEnrolledCourses = async () => {
     console.error("Error fetching top enrolled courses:", error);
   }
 };
+
+const fetchMeetingParticipants = async (meetingId) => {
+  const response = await axios.get(`http://localhost:5000/participants/${meetingId}`);
+  return response.data;
+};
+
+export const updateAttendance = async (eventId) => {
+  try {
+    const eventDoc = await getDoc(doc(db, "events", eventId));
+    if (eventDoc.empty) throw new Error("Event not found");
+
+    const event = eventDoc.data();
+
+    const enrolledStudents = (await getDocs(query(collection(db, "users"), where("enrolledCourses", "array-contains", eventDoc.data().courseId)))).docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    for (const student of enrolledStudents) {
+      const attendanceRef = doc(db, "attendance", `${eventId}_${student.email}`);
+      await setDoc(attendanceRef, {
+        eventId,
+        email: student.email,
+        status: "Absent",
+      });
+    }
+
+    const participants = await fetchMeetingParticipants(event.zoomMeetingId);
+
+    const presentParticipants = participants.filter(
+      (participant) => participant.duration >= 3 * 60
+    );
+
+    for (const participant of presentParticipants) {
+      await setDoc(doc(collection(db, "attendance"), `${eventId}_${participant.name}`), {
+        eventId,
+        email: participant.name,
+        status: "Present",
+      });
+    }
+
+    console.log("Attendance updated successfully!");
+  } catch (error) {
+    console.error("Error updating attendance:", error);
+  }
+};
+
+export const createAttendance = async (eventId, userData) => {
+  try {
+    const attendanceQuery = query(
+      collection(db, "attendance"),
+      where("eventId", "==", eventId),
+      where("email", "==", userData.email)
+    );
+    const snapshot = await getDocs(attendanceQuery);
+
+    if (snapshot.empty) {
+      await setDoc(doc(collection(db, "attendance"), `${eventId}_${userData.email}`), {
+        eventId,
+        email: userData.email,
+        status: "Absent",
+      });
+
+      console.log(`Attendance created: ${eventId}_${userData.email}`);
+    } else {
+      console.log(`Attendance record for ${userData.email} already exists.`);
+    }
+  } catch (error) {
+    console.error("Error creating attendance record:", error);
+  }
+};
+
+
+export const getStudentAttendance = async (userId) => {
+  try {
+    const userData = (await getDoc(doc(db, "users", userId))).data();
+    const attendanceQuery = query(
+      collection(db, "attendance"),
+      where("email", "==", userData.email)
+    );
+    const attendanceSnapshot = await getDocs(attendanceQuery);
+
+    const attendanceData = [];
+    attendanceSnapshot.forEach((doc) => {
+      attendanceData.push({ id: doc.id, ...doc.data() });
+    });
+
+    for (const record of attendanceData) {
+      const eventData = (await getDoc(doc(db, "events", record.eventId))).data();
+      if (!eventData.empty) {
+        record.title = eventData.title;
+        record.eventDate = eventData.eventDate;
+        record.courseName = eventData.courseName;
+      }
+    }
+
+    return attendanceData;
+  } catch (error) {
+    console.error("Error fetching attendance:", error);
+    throw error;
+  }
+};
+
+export const updateRecentCourse = async (userId, courseData) => {
+  const userRef = doc(db, "users", userId);
+  await updateDoc(userRef, { lastVisitedCourse: courseData });
+  return (await getDoc(userRef)).data().lastVisitedCourse;
+};
+
+export const getRecentCourse = async (userId) => {
+  try {
+    const userRef = doc(db, "users", userId);
+    const lastVisitedCourse = (await getDoc(userRef)).data().lastVisitedCourse;
+    return lastVisitedCourse;
+  } catch (error) {
+    console.error(error);
+  }
+}

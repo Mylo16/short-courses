@@ -1,12 +1,39 @@
+:root {
+  --primary-bg: #fff8ee;
+  --secondary-bg: rgb(216, 1, 1);
+  --accent-bg: #2C2C2C;
+
+  --primary-text: #2C2C2C;
+  --secondary-text: #d80101;
+  --muted-text: #757575;
+
+  --primary-accent: rgb(255, 152, 0);
+  --secondary-accent: rgb(39,202,204);
+  --error-color: #FF5722;
+  --success-color: #4CAF50;
+
+  --border-color: #333333;
+
+  --hover-bg: #333333;
+  --focus-outline: #FF9800;
+}
+
+
 .summary-ctn {
   margin-top: 5em;
+}
+
+.sum-title {
+  margin-left: 10px;
+  font-size: 1.2em;
+  font-weight: 450;
 }
 
 .table-container {
   width: 100%;
   height: 50vh;
   overflow: hidden;
-  margin: 2em auto;
+  margin: 2em 0;
   padding: 2em 0;
   display: flex;
   flex-direction: column;
@@ -47,8 +74,8 @@ th {
   height: 100%;
   background-color: white;
   -webkit-box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.75);
--moz-box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.75);
-box-shadow: inset 0px 1px 2px 1px rgba(0, 0, 0, 0.377);
+  -moz-box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.75);
+  box-shadow: inset 0px 1px 2px 1px rgba(0, 0, 0, 0.377);
   
 }
 
@@ -62,11 +89,15 @@ th, td {
   text-align: center;
   padding: 10px;
   border-bottom: 1px solid #33333375;
+  color: var(--primary-text);
+}
+
+.th-width, .td-width {
   width: 60px;
 }
 
 td {
-  color: rgb(16, 16, 66);
+  font-size: 12px;
 }
 
 th.stn-data,
@@ -76,14 +107,14 @@ td.stn-data {
 
 th.item,
 td.item {
-  width: 120px;
+  width: 140px;
 }
 
 th.table-date,
 td.table-date,
 th.person,
 td.person {
-  width: 90px;
+  width: 70px;
 }
 
 .table-header::-webkit-scrollbar {
@@ -102,12 +133,6 @@ td.person {
   height: 10px;
 }
 
-
-
-tr:nth-child(even) {
-background-color: var(--hover-bg);
-}
-
 .table-body tr:hover {
 background-color: #ddd;
 }
@@ -122,4 +147,57 @@ text-align: center;
 .styled-table th {
 background-color: #4CAF50;
 color: white;
+}
+
+.video-container {
+  width: 40%;
+  max-width: 300px;
+  margin: 2em auto;
+}
+
+.background-video {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.present {
+  background-color: green;
+  color: wheat;
+  padding: 0 5px;
+  border-radius: 5px;
+}
+
+.absent {
+  background-color: red;
+  color: wheat;
+  padding: 0 5px;
+  border-radius: 5px;
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  .summary-ctn {
+    padding-left: 30%;
+  }
+
+  .table-container .table-header {
+    margin: 0;
+  }
+
+  .table-body {
+    margin: 0;
+  }
+}
+
+@media (min-width: 1201px) {
+  .summary-ctn {
+    padding-left: 25%;
+  }
+
+  .table-container .table-header {
+    margin: 0;
+  }
+
+  .table-body {
+    margin: 0;
+  }
 }

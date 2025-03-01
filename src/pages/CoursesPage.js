@@ -40,7 +40,7 @@ function Courses() {
                 <div className="yc-status tp-price">GHC {course.price}</div>
                 <div className="yc-profile-ctn">
                   <div className="yc-profile"><img src={course.facilitator.user_img}/></div>
-                  <div>{course.facilitator.name}</div>
+                  <div>{course.facilitator.firstName} {course.facilitator.lastName}</div>
                 </div>     
               </div>
             ))
@@ -65,7 +65,7 @@ function Courses() {
                 <div className="yc-status tp-price">GHC {course.price}</div>
                 <div className="yc-profile-ctn">
                   <div className="yc-profile"><img src={course.facilitator.user_img}/></div>
-                  <div>{course.facilitator.name}</div>
+                  <div>{course.facilitator.firstName} {course.facilitator.lastName}</div>
                 </div>     
               </div>
             ))
@@ -90,7 +90,7 @@ function Courses() {
                 <div className="yc-status tp-price">GHC {course.price}</div>
                 <div className="yc-profile-ctn">
                   <div className="yc-profile"><img src={course.facilitator.user_img}/></div>
-                  <div>{course.facilitator.name}</div>
+                  <div>{course.facilitator.firstName} {course.facilitator.lastName}</div>
                 </div>     
               </div>
             ))
@@ -99,13 +99,6 @@ function Courses() {
           )}
         </section>
         
-      </div>
-      <div className='logo-strike bottom'>
-        <img className='strike-mob' src={images.logo2}/>
-        <img className='strike-mob' src={images.logo2}/>
-        <img className='strike-mob' src={images.logo2}/>
-        <img className='strike-pc' src={images.logo2}/>
-        <img className='strike-pc' src={images.logo2}/>
       </div>
     </>
   );

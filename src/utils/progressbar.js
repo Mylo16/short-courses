@@ -5,7 +5,7 @@ const CircleProgressBar = ({ percentage }) => {
   const [isVisible, setIsVisible] = useState(false);
   const controls = useAnimation();
 
-  const circleRadius = 15; // Radius of the circle
+  const circleRadius = 25; // Radius of the circle
   const circleCircumference = 2 * Math.PI * circleRadius;
   const progressOffset = circleCircumference - (percentage / 100) * circleCircumference;
 
@@ -34,10 +34,10 @@ const CircleProgressBar = ({ percentage }) => {
       className="relative w-32 h-32 flex items-center justify-center mx-auto"
     >
       {/* Circle Background */}
-      <svg className="absolute top-0 left-0" width="40" height="40">
+      <svg className="absolute top-0 left-0" width="60" height="60">
         <circle
-          cx="20"
-          cy="20"
+          cx="28"
+          cy="28"
           r={circleRadius}
           stroke="#e0e0e0"
           strokeWidth="3"
@@ -45,8 +45,8 @@ const CircleProgressBar = ({ percentage }) => {
         />
         {/* Animated Circle Progress */}
         <motion.circle
-          cx="20"
-          cy="20"
+          cx="32"
+          cy="28"
           r={circleRadius}
           stroke="#4caf50"
           strokeWidth="3"

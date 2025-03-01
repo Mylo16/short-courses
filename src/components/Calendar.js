@@ -23,6 +23,8 @@ const AdminCalendar = ({ user }) => {
     title: "",
     startTime: "",
     endTime: "",
+    zoomLink: "",
+    zoomMeetingId: "",
   });
 
   useEffect(() => {
@@ -45,7 +47,7 @@ const AdminCalendar = ({ user }) => {
         return;
       }
 
-      if (new Date(selectedDate) < new Date()) {
+      if (new Date(`${selectedDate}T11:59:00`) < new Date()) {
         alert("Event can't be scheduled for past dates");
         return;
       }
@@ -56,10 +58,12 @@ const AdminCalendar = ({ user }) => {
         endTime: newEvent.endTime,
         eventDate: selectedDate,
         courseId: selectedCourse.value,
+        zoomLink: newEvent.zoomLink,
+        zoomMeetingId: newEvent.zoomMeetingId,
       };
 
       await dispatch(createEvent(newEventData));
-      setNewEvent({ title: "", startTime: "", endTime: "" });
+      setNewEvent({ title: "", startTime: "", endTime: "", zoomLink: "", zoomMeetingId: "" });
       navigate(0);
     } else {
       alert("Please fill in all fields!");
@@ -151,6 +155,30 @@ const AdminCalendar = ({ user }) => {
                     value={newEvent.endTime}
                     onChange={(e) =>
                       setNewEvent({ ...newEvent, endTime: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="input-ctn">
+                  <label>Zoom Link</label>
+                  <input
+                    type="text"
+                    placeholder="Zoom Link"
+                    value={newEvent.zoomLink}
+                    onChange={(e) =>
+                      setNewEvent({ ...newEvent, zoomLink: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="input-ctn">
+                  <label>Zoom Meeting ID</label>
+                  <input
+                    type="text"
+                    placeholder="Meeting ID"
+                    value={newEvent.zoomMeetingId}
+                    onChange={(e) =>
+                      setNewEvent({ ...newEvent, zoomMeetingId: e.target.value })
                     }
                     required
                   />

@@ -91,6 +91,8 @@ tr .fc-col-header-cell-cushion {
   ul {
     list-style: none;
     padding: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
   }
   li {
     margin: 10px 0;

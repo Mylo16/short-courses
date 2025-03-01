@@ -24,16 +24,22 @@
   padding: 4em 20px;
 }
 
-.cd-ctn {
-    gap: 3em;
-  }
+.cd-no-user {
+  margin: 2em auto;
+  max-width: 800px;
+  padding: 0 20px;
+}
 
-  .cd-pic img {
-    width: 100%;
-    max-width: 400px;
-  }
+.ci-ctn {
+  gap: 3em;
+}
 
-.cd-info {
+.ci-pic img {
+  width: 100%;
+  max-width: 400px;
+}
+
+.ci-info {
   font-size: 14px;
 }
 
@@ -53,6 +59,7 @@
   padding: 10px;
   border: 1px solid var(--primary-accent);
   cursor: pointer;
+  margin: 2em 0;
 }
 
 .enroll-btn:hover {
@@ -67,18 +74,44 @@
   margin-top: 1em;
 }
 
+.enroll-modal-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2c2c2ccc;
+  z-index: 999;
+}
+
+.em-ctn {
+  background-color: var(--primary-bg);
+  padding: 2em 10px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.em-number {
+  font-weight: 450;
+  font-size: 1.2em;
+}
+
 @media (min-width: 768px) and (max-width: 1200px) {
   .course-details {
     padding-left: 30%;
     padding-top: 5.8em;
   }
 
-  .cd-ctn {
+  .ci-ctn {
     display: flex;
     gap: 3em;
   }
 
-  .cd-pic img {
+  .ci-pic img {
     width: 100%;
   }
 
@@ -94,12 +127,12 @@
     padding-top: 5.8em;
   }
 
-  .cd-ctn {
+  .ci-ctn {
     display: flex;
     gap: 3em;
   }
 
-  .cd-pic img {
+  .ci-pic img {
     width: 80%;
   }
 

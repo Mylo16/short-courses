@@ -31,6 +31,12 @@
   color: var(--secondary-text);
 }
 
+.banner-txt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .banner-description {
   text-align: center;
 }
@@ -137,6 +143,7 @@
   width: 55%;
   justify-content: space-between;
   display: flex;
+  align-items: center;
   margin: auto;
   color: var(--secondary-accent);
 }
@@ -149,6 +156,7 @@
 
 .free-btn {
   background: linear-gradient(0deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
+  
 }
 
 /******* SEARCH COURSES *******/
@@ -168,9 +176,8 @@
 }
 
 .search-courses {
-  margin-top: 2em;
+  margin-top: 9em;
   overflow-x: hidden;
-
 }
 
 .search-title {
@@ -184,7 +191,7 @@
   justify-content: center;
 }
 
-.search-input {
+.searching-input {
   height: 30px;
   width: 150px;
 }
@@ -311,6 +318,22 @@
 }
 
 /*****POPULAR COURSES*****/
+
+.pc-ctn {
+  box-shadow: inset 0px 1px 1px 2px rgba(255, 0, 0, 0.219);
+  padding-right: 5px;
+}
+
+.yc-ctn::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.yc-ctn::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 5px;
+}
+
 .popular-courses-ctn {
   background: linear-gradient(0deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
   padding: 1em;
@@ -328,92 +351,6 @@
   color: var(--primary-text);
 }
 
-.course-card-ctn {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  align-items: center;
-  margin-top: 1em;
-}
-
-.course-card {
-  box-shadow: 0px 0px 10px 0px rgb(107, 26, 26);
-  border-radius: 15px;
-  background-color: var(--primary-bg);
-  width: 70%;
-  max-width: 250px;
-  padding: 10px;
-}
-
-.course-pic {
-  width: 100%;
-  height: 20em;
-  border-radius: 10px;
-  transition: 0.5s ease-in-out;
-}
-
-.course-pic:hover {
-  transform: scale(1.1);
-  height: 20em;
-}
-
-.course-program {
-  display: flex;
-  justify-content: space-between;
-}
-
-.program-type {
-  background-color: var(--secondary-accent);
-  font-size: small;
-  padding: 2px 4px;
-  border-radius: 5px;
-}
-
-.rating {
-  font-size: small;
-}
-
-.course-name {
-  margin: 5px 0;
-  font-weight: 450;
-}
-
-.instructor-stn {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  margin-top: 1em;
-}
-
-.course-price {
-  background: linear-gradient(0deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
-  padding: 2px 4px;
-  border-radius: 10px;
-}
-
-.instructor {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.instructor img {
-  width: 20px;
-}
-
-.instructor-name {
-  font-size: small;
-}
-
-.instructor-stn::before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: 0%;
-  height: 1px;
-  width: 100%;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%);
-}
 
 
 /***** FACILITATORS *****/
@@ -443,6 +380,7 @@
 
 .fs-card {
   min-width: 200px;
+  max-width: 400px;
   border-radius: 15px;
   padding: 10px;
   background-color: var(--primary-bg);
@@ -660,27 +598,47 @@
     display: flex;
     align-items: center;
     width: 90%;
-    margin: auto;
+    margin: 4em auto 0;
   }
 
   .banner-txt {
     width: 60%;
-  }
-
-  .banner-outline {
-    /* width: 40%; */
+    margin-top: 5em;
   }
 
   .banner-btns {
     justify-content: flex-start;
     gap: 2em;
     width: 60%;
+    margin-bottom: 10em;
   }
+
+  .banner-container img {
+    width: 500px;
+  }
+
+  .logo-strike {
+    justify-content: center;
+    gap: 20%;
+  }
+
   .gallery-view {
     flex-direction: row;
     justify-content: center;
     align-items: center;
   }
+
+  .pc-ctn {
+    box-shadow: none;
+  }
+
+  .pc-ctn .yc-ctn {
+    width: 100%;
+    padding: 1em;
+    gap: 2em;
+  }
+
+ 
 
   .popular-courses-ctn {
     padding: 4em 0;
@@ -698,7 +656,7 @@
 
   .tes-card-ctn {
     flex-direction: row;
-    justify-content: centerd;
+    justify-content: center;
   }
 
   .tes-description {

@@ -53,7 +53,7 @@ export default function NavBar2() {
   return (
     <>
       <nav className="nav nav2">
-        <div className="logo">
+        <div onClick={() => navigate("/")} className="logo">
           <img className='logo-pic' src={images.logo} alt="Logo" />
         </div>
         <div className="search-container">
@@ -83,9 +83,9 @@ export default function NavBar2() {
         )}
       </div>
         <div className="nav2-right">
-        <img className="notification" src={images.notification} alt="Notification" />
         <div onClick={() => { logout() }} className='sign-in sign-in2'>
           <img className='profile' src={images.profile} alt="Profile" />
+          <p>Sign out</p>
         </div>
         </div>
         <div className="menu-icon menu-icon2" onClick={() => setIsOpen(!isOpen)}>
@@ -107,9 +107,9 @@ export default function NavBar2() {
               <img className={`chevron-down ${expandedCourses && location.pathname === "/courses" ? "rotate" : ""}`} src={images.chevronDown} alt="Chevron Down" />
             </li>
             {location.pathname === "/courses" && !loading && (
-              <div className={`course-links ${expandedCourses ? "expanded" : ""}`}>
+              <div className={`course-links ${expandedCourses ? "expand" : ""}`}>
                 {allCourses.map((course, index) => (
-                  <Link key={index} className="course-link">{course.course_name}</Link>
+                  <Link key={index} to={`/course-info/${course.id}`} className="course-link">{course.course_name}</Link>
                 ))}
               </div>
             )}

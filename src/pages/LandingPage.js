@@ -3,6 +3,11 @@ import '../css/landing.css'
 import images from '../utils/images';
 import axios from 'axios';
 import Footer from '../components/Footer';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCourses, fetchTopPicks } from '../redux/coursesSlice';
+import { useNavigate } from 'react-router-dom';
+import LoadingBar from '../components/loadingBar';
+import { useAuth } from '../utils/authProvider';
 
 export default function LandingPage() {
   const [email, setEmail] = useState('');
@@ -10,7 +15,14 @@ export default function LandingPage() {
   const [name, setName] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { loading, allCourses } = useSelector((state) => state.courses);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {user} = useAuth();
 
+  useEffect(() => {
+    dispatch(fetchCourses());
+  }, [])
   const [inViewSections, setInViewSections] = useState({
     section1: false,
     section2: false,
@@ -67,12 +79,21 @@ export default function LandingPage() {
     }
   };
 
+  const handleSignIn = () => {
+    if (user) {
+      navigate("/dashboard");
+    } else {
+      navigate("/login");
+    }
+  }
+
   return(
     <>
       <section className='banner-stn'>
-      <div className='bannrer-txt'>
+      <div className='banner-txt'>
         <div className="bolded-topic"><span className='span-txt'>Develop</span> your skills in a new & unique way</div>
         <div className='banner-description'>Explore a trasformative approach to skill development on our online learning platform.</div>
+        <button onClick={handleSignIn} className='enroll-btn'>Enroll Now</button>
       </div>
       <div className='banner-outline'>
         <div className='banner-container'>
@@ -83,10 +104,6 @@ export default function LandingPage() {
         <div className='txt-bot3'>Learn anywhere😁</div>
       </div>
       </section>
-      <div className='banner-btns'>
-        <button className='enroll-btn'>Enroll Now</button>
-        <button className='free-btn'>Free Trial</button>
-      </div>
 
       <section className='search-courses'>
         <div className='logo-strike'>
@@ -95,11 +112,6 @@ export default function LandingPage() {
           <img className='strike-mob' src={images.logo2}/>
           <img className='strike-pc' src={images.logo2}/>
           <img className='strike-pc' src={images.logo2}/>
-        </div>
-        <div className='search-title'>Search Courses</div>
-        <div className='search-field'>
-          <input className='search-input' placeholder='Search' />
-          <div className='search-btn'><img src={images.search} /></div>
         </div>
         <div className='gallery-view'>
           <div className='students'>
@@ -145,58 +157,34 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <section className='popular-courses-ctn'>
-        <div className='pc-title'>Popular Courses</div>
+      <section id='courses' className='popular-courses-ctn'>
+        <div className='pc-title'>Courses</div>
         <div className='pc-description'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.</div>
-        <div className='course-card-ctn'>
-          <div className='course-card'>
-            <div><img className='course-pic' src={images.card1}/></div>
-            <div className='course-program'>
-              <div className='program-type'>Financial</div>
-              <div className='rating'>⭐4.8</div>
-            </div>
-            <div className='course-name'>Financial Accounting</div>
-            <div className='instructor-stn'>
-              <div className='course-price'>GHC 400</div>
-              <div className='instructor'>
-                <img src={images.profile} alt='instructor'/>
-                <div className='instructor-name'>P. Dantey</div>
-              </div>
-            </div>
+        <section className="pc-ctn">
+          <div className="yc-ctn">
+            {loading ?
+              <LoadingBar /> :
+              allCourses.map((course, index) => (
+                <div onClick={() => navigate(`/courses/${course.id}`)} key={index} className="yc-card">
+                  <div className="yc-img-ctn"><img src={course.course_pic} /></div>
+                  <div className="yc-summary-ctn">
+                    <div>▶️ {course.numVideos} videos</div>
+                    <div>⌚ {course.duration} weeks</div>
+                  </div>
+                  <div className="yc-name">{course.course_name}</div>
+                  <div className="yc-status tp-price">GHC {course.price}.00</div>
+                  <div className="yc-profile-ctn">
+                    <div className="yc-profile"><img src={course.facilitatorImg}/></div>
+                    <div>{course.facilitatorName}</div>
+                  </div>
+                </div>
+              ))
+            }
           </div>
-          <div className='course-card'>
-            <div><img className='course-pic' src={images.card2}/></div>
-            <div className='course-program'>
-              <div className='program-type'>Financial</div>
-              <div className='rating'>⭐4.8</div>
-            </div>
-            <div className='course-name'>Financial Accounting</div>
-            <div className='instructor-stn'>
-              <div className='course-price'>GHC 400</div>
-              <div className='instructor'>
-                <img src={images.profile} alt='instructor'/>
-                <div className='instructor-name'>P. Dantey</div>
-              </div>
-            </div>
-          </div>
-          <div className='course-card'>
-            <div><img className='course-pic' src={images.card3}/></div>
-            <div className='course-program'>
-              <div className='program-type'>Financial</div>
-              <div className='rating'>⭐4.8</div>
-            </div>
-            <div className='course-name'>Financial Accounting</div>
-            <div className='instructor-stn'>
-              <div className='course-price'>GHC 400</div>
-              <div className='instructor'>
-                <img src={images.profile} alt='instructor'/>
-                <div className='instructor-name'>P. Dantey</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        </section>
+       
       </section>
-      <section className='facilitators-stn'>
+      <section id='teachers' className='facilitators-stn'>
         <div className='fs-title'>Meet Our Expert Facilitators</div>
         <div className='fs-card-ctn'>
           <div className='fs-card'>
@@ -290,7 +278,7 @@ export default function LandingPage() {
         <button className='tes-btn'>See All</button>
 
       </section>
-      <section className="contact-stn">
+      <section id='about' className="contact-stn">
         <div className="cs-content-ctn">
           <div className="cs-content-left">
             Have questions for us?
@@ -349,6 +337,5 @@ export default function LandingPage() {
         <Footer />
       </section>
     </>
-    
   );
 }

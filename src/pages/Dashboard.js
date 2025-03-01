@@ -8,7 +8,7 @@ import AdminCalendar from "../components/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../utils/firebaseConfig";
 import { fetchEnrollments } from "../redux/enrollmentsSlice";
-import { fetchRecentCourse, fetchTopPicks, updateRecent } from "../redux/coursesSlice";
+import { fetchRecentCourse, fetchTopPicks } from "../redux/coursesSlice";
 import { fetchEvents } from "../redux/calendarSlice";
 import LoadingBar from "../components/loadingBar";
 import { createUserAttendance, fetchUserAttendance, updateUserAttendance } from "../redux/attendanceSlice";
@@ -17,12 +17,12 @@ import { fetchCurrentUser } from "../redux/usersSlice";
 export default function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { enrolledCourses, activeCourses, completedCourses } = useSelector((state) => state.enrollments);
-  const { topPicks, topPicksLoading, recentCourse } = useSelector((state) => state.courses);
+  const { activeCourses, completedCourses, fetchEnrollmentsLoading } = useSelector((state) => state.enrollments);
+  const { topPicks, topPicksLoading } = useSelector((state) => state.courses);
   const { eventsOnTimeline, loading } = useSelector((state) => state.calendar);
   const { currentUser } = useSelector((state) => state.users);
-  const [isActive, setIsActive] = useState(false);
-
+  const [isActive, setIsActive] = useState(true);
+  console.log(eventsOnTimeline);
   useEffect(() => {
     dispatch(fetchEnrollments(auth.currentUser.uid));
     dispatch(fetchEvents(auth.currentUser.uid));
@@ -32,7 +32,6 @@ export default function Dashboard() {
     dispatch(fetchCurrentUser(auth.currentUser.uid));
     dispatch(fetchUserAttendance(auth.currentUser.uid));
   }, []);
-
   
   useEffect(() => {
     const handleBackButton = () => {
@@ -45,11 +44,6 @@ export default function Dashboard() {
       window.removeEventListener("popstate", handleBackButton);
     };
   }, [navigate]);
-
-  const handleCourseClick = async (course) => {
-    await dispatch(updateRecent({ userId: auth.currentUser.uid, courseData: course }));
-    navigate(`/course-details/${course.id}`);
-  };
 
   const joinZoomClass = async (zoomUrl, eventId) => {
     try {
@@ -67,7 +61,7 @@ export default function Dashboard() {
       <NavBar2 />
       <div className="dashboard-ctn">
         <section className="timeline-stn">
-          <div className="welcome-msg">Welcome back, {currentUser.name} 👋</div>
+          <div className="welcome-msg">Welcome {currentUser.firstName} 👋</div>
           <div className="yc-header">Your Courses</div>
           <div className='toggle-stn'>
             <div className="toggle-stn-ctn">
@@ -79,7 +73,11 @@ export default function Dashboard() {
           </div>
           {isActive ? (
             <div className="yc-container">
-              {activeCourses.map((course, index) => (
+              {fetchEnrollmentsLoading ? <LoadingBar /> : (  
+              activeCourses.length === 0 ? (
+                <div>You haven't registered for a course yet</div>
+              ): (
+              activeCourses.map((course, index) => (
                 <div onClick={() => navigate(`/course-details/${course.id}`)} key={index} className="yc-item">
                   <div className="yc-left">
                     <img src={course.course_icon} alt="course"/>
@@ -92,11 +90,17 @@ export default function Dashboard() {
                     <CircleProgressBar percentage={course.progress}/>
                   </div>
                 </div>
-              ))}
+              ))
+              )
+              )}
             </div>
           ):(
             <div className="yc-container">
-              {completedCourses.map((course, index) => (
+              {completedCourses.length === 0 ? (
+                <div>You haven't completed any course yet</div>
+              ):(
+
+              completedCourses.map((course, index) => (
                 <div key={index} className="yc-item completed">
                   <div className="yc-left">
                     <img src={course.course_icon} alt="course"/>
@@ -112,7 +116,8 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </div>
-              ))}
+              ))
+              )}
             </div>
           )}
           <div className="tl-header">Timeline</div>
@@ -177,13 +182,6 @@ export default function Dashboard() {
         <section className="calendar-stn">
           <AdminCalendar user={currentUser} />
         </section>
-        <div className='logo-strike bottom'>
-          <img className='strike-mob' src={images.logo2}/>
-          <img className='strike-mob' src={images.logo2}/>
-          <img className='strike-mob' src={images.logo2}/>
-          <img className='strike-pc' src={images.logo2}/>
-          <img className='strike-pc' src={images.logo2}/>
-        </div>
       </div>
     </section>
     </main>

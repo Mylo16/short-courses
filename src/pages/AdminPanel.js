@@ -20,6 +20,7 @@ const AdminPanel = () => {
     description: "",
     facilitatorId: "",
     programme: "",
+    courseVideo: "",
   });
 
   const [lessonData, setLessonData] = useState({
@@ -195,6 +196,14 @@ const AdminPanel = () => {
               onChange={handleCourseChange}
               required
             />
+            <input
+              type="text"
+              name="courseVideo"
+              placeholder="Course Video"
+              value={courseData.courseVideo}
+              onChange={handleCourseChange}
+              required
+            />
             <button type="submit">Create Course</button>
           </form>
         </div>
@@ -270,7 +279,7 @@ const AdminPanel = () => {
           <h3>Enroll User</h3>
           <form onSubmit={handleEnrollSubmit} className="ap-form">
             <Select
-              options={users.map((user) => ({ value: user.id, label: user.name }))}
+              options={users.map((user) => ({ value: user.id, label: user.email }))}
               onChange={setSelectedUser}
               placeholder="Select User"
               className="react-select"
@@ -325,5 +334,3 @@ const AdminPanel = () => {
 };
 
 export default AdminPanel;
-
-/* AddCourse and AddLesson functions should be properly imported and implemented */

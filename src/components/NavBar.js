@@ -6,17 +6,9 @@ import '../css/navbar.css'
 
 function Navbar({ user }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState(null);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLinkClicked = (index) => {
-    setActiveLink(index);
-    setIsOpen(false);
-  };
-
   const handleClickOutside = (event) => {
-    // Check if the click was inside the menu icon or links container
     if (isOpen && !event.target.closest('.nav') && !event.target.closest('.links')) {
       setIsOpen(false);
     }
@@ -37,16 +29,16 @@ function Navbar({ user }) {
 
   const handleSignIn = () => {
     if (user) {
-      navigate("/dashboard"); // Redirect to dashboard if logged in
+      navigate("/dashboard");
     } else {
-      navigate("/login"); // Redirect to login page if not logged in
+      navigate("/login");
     }
   }
 
   return (
     <>
       <nav className="nav">
-        <div className="logo">
+        <div onClick={() => navigate("/")} className="logo">
           <img className='logo-pic' src={images.logo}/>
         </div>
         <div onClick={handleSignIn} className='sign-in'>
@@ -60,17 +52,17 @@ function Navbar({ user }) {
         </div>
         <div className={`links ${isOpen ? 'open' : ''}`}>
           <ul className="side-links">
-            <li className={`side-link ${activeLink === 1 ? 'active' : ''}`} onClick={() => handleLinkClicked(1)}>
-              <Link className="link" to="/home">Home</Link>
+            <li className="side-link">
+              <a className="link" href="/">Home</a>
             </li>
-            <li className={`side-link ${activeLink === 2 ? 'active' : ''}`} onClick={() => handleLinkClicked(2)}>
-              <Link className="link" to="/courses">Courses</Link>
+            <li className="side-link">
+              <a className="link" href="/#courses">Courses</a>
             </li>
-            <li className={`side-link ${activeLink === 4 ? 'active' : ''}`} onClick={() => handleLinkClicked(4)}>
-              <Link className="link" to="/teachers">Teachers</Link>
+            <li className="side-link">
+              <a className="link" href="/#teachers">Teachers</a>
             </li>
-            <li className={`side-link ${activeLink === 5 ? 'active' : ''}`} onClick={() => handleLinkClicked(5)}>
-              <Link className="link" to="/about">About Us</Link>
+            <li className="side-link">
+              <a className="link" href="/#about">About Us</a>
             </li>
           </ul>
         </div>

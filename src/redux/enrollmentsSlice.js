@@ -22,6 +22,7 @@ const enrollmentsSlice = createSlice({
     completedCourses: [],
     completedLessons: [],
     status: 'idle',
+    fetchEnrollmentsLoading: null,
     error: null,
   },
   reducers: {},
@@ -31,7 +32,14 @@ const enrollmentsSlice = createSlice({
         state.enrolledCourses = action.payload;
         state.activeCourses = action.payload.filter(course => course.progress < 100);
         state.completedCourses = action.payload.filter(course => course.progress === 100);
-        state.status = 'succeeded';
+        state.fetchEnrollmentsLoading = false;
+      })
+      .addCase(fetchEnrollments.pending, (state) => {
+        state.fetchEnrollmentsLoading = true;
+      })
+      .addCase(fetchEnrollments.rejected, (state, action) => {
+        state.fetchEnrollmentsLoading = false;
+        state.error = action.error.message;
       })
       .addCase(enrollUser.fulfilled, (state, action) => {
         state.enrolledCourses.push(action.payload);

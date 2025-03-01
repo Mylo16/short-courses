@@ -17,7 +17,7 @@ import {
 import axios from "axios";
 
 export const addCourse = async (courseData) => {
-  const { name, pic, duration, numVideos, price, description, facilitatorId, programme } = courseData;
+  const { name, pic, duration, numVideos, price, description, facilitatorId, programme, courseVideo } = courseData;
 
   try {
     const coursesRef = collection(db, "courses");
@@ -40,6 +40,7 @@ export const addCourse = async (courseData) => {
       price,
       course_description: description,
       programme,
+      course_video: courseVideo,
     });
 
     alert("Course created successfully");
@@ -126,7 +127,6 @@ export const getCourseVideos = async (courseId) => {
       ...doc.data()
     }
   ));
-  console.log(videos);
   return videos
 }
 
@@ -153,7 +153,6 @@ export const getCurrentUser = async (userId) => {
     }
   } catch (error) {
     console.error("Error fetching user data:", error);
-    throw error;
   }
 };
 
@@ -210,7 +209,7 @@ export const fetchEnrolledCourses = async (userId) => {
           lessons,
           facilitatorId: courseData.facilitatorId.id,
           ...enrollmentDetails[courseDoc.id],
-          facilitatorName: facilitatorData?.name,
+          facilitatorName: `${facilitatorData?.firstName} ${facilitatorData?.lastName}`,
           facilitatorImage: facilitatorData?.user_img,
         };
       })
@@ -334,76 +333,72 @@ export const enrollUserInCourse = async (userId, courseId) => {
 
 export const addEvent = async (eventData) => {
   const { title, eventDate, startTime, endTime, courseId, zoomLink, zoomMeetingId } = eventData;
-  console.log(eventData);
+
   try {
     const eventRef = collection(db, "events");
     const courseData = (await getDoc(doc(db, "courses", courseId))).data();
-    const facilitatorData = (await getDocs(query(collection(db, "users"), where("my_course", "==", doc(db, "courses", courseId))))).docs[0].data();
+    const facilitatorSnapshot = await getDocs(query(collection(db, "users"), where("my_course", "==", doc(db, "courses", courseId))));
+    if (facilitatorSnapshot.empty) {
+      alert("No facilitator found for this course event");
+    }
+    const facilitatorData = facilitatorSnapshot.docs[0].data();
+    
     await addDoc(eventRef, {
       title,
       startTime: Timestamp.fromDate(new Date(`${eventDate}T${startTime}:00`)),
       endTime: Timestamp.fromDate(new Date(`${eventDate}T${endTime}:00`)),
       eventDate: Timestamp.fromDate(new Date(eventDate)),
-      facilitatorName: facilitatorData.name,
+      facilitatorName: `${facilitatorData.firstName} ${facilitatorData.lastName}`,
+      facilitatorImage: facilitatorData.user_img,
       courseId: doc(db, "courses", courseId),
       courseName: courseData.course_name,
       zoomLink,
-      zoomMeetingId
+      zoomMeetingId,
     });
 
     alert("Event created successfully!");
   } catch (error) {
     console.error("Error creating event:", error);
-    alert("Error creating event. Please try again.");
   }
 };
 
 export const getStudentEvents = async (studentId) => {
   try {
+    if (!studentId) {
+      console.error("Error: studentId is undefined or null");
+      return [];
+    }
+
     const userDocRef = doc(db, "users", studentId);
     const userDoc = await getDoc(userDocRef);
 
     if (!userDoc.exists()) {
-      alert("User not found");
+      console.warn("User not found");
       return [];
     }
 
-    if(userDoc.data().role === "admin") {
+    const userData = userDoc.data();
+    if (!userData || !userData.role) {
+      console.error("Error: User data is invalid or missing role field");
+      return [];
+    }
+
+    if (userData.role === "admin") {
       const eventsRef = collection(db, "events");
       const querySnapshot = await getDocs(eventsRef);
+      if (querySnapshot.empty) {
+        console.warn("No events found");
+        return [];
+      }
+      
+      return querySnapshot.docs.map((doc) => formatEvent(doc));
+    }
 
-      const allEvents = querySnapshot.docs.map((doc) => {
-        const eventData = doc.data();
+    if (!Array.isArray(userData.enrolledCourses)) {
+      return [];
+    }
 
-        const eventDate = eventData.eventDate?.toDate();
-        const startTime = eventData.startTime?.toDate();
-        const endTime = eventData.endTime?.toDate();
-
-        return {
-          id: doc.id,
-          ...eventData,
-          eventDate: eventDate?.toLocaleString("en-US", {
-            weekday: "short",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          }),
-          startTime: startTime?.toLocaleString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-          endTime: endTime?.toLocaleString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        };
-      });
-
-      return allEvents;
-    } else {
-
-    const enrolledCourses = userDoc.data().enrolledCourses;
-
+    const enrolledCourses = userData.enrolledCourses;
     const batches = [];
     for (let i = 0; i < enrolledCourses.length; i += 10) {
       batches.push(enrolledCourses.slice(i, i + 10));
@@ -412,41 +407,62 @@ export const getStudentEvents = async (studentId) => {
     const events = [];
 
     for (const batch of batches) {
-      const eventsRef = collection(db, "events");
-      const q = query(eventsRef, where("courseId", "in", batch));
+      try {
+        const eventsRef = collection(db, "events");
+        const q = query(eventsRef, where("courseId", "in", batch));
+        const querySnapshot = await getDocs(q);
 
-      const querySnapshot = await getDocs(q);
-      const batchEvents = querySnapshot.docs.map((doc) => {
-        const eventData = doc.data();
-
-        const eventDate = eventData.eventDate?.toDate();
-        const startTime = eventData.startTime?.toDate();
-        const endTime = eventData.endTime?.toDate();
-
-        return {
-          id: doc.id,
-          ...eventData,
-          eventDate: eventDate.toLocaleString('en-US', {
-            weekday: 'short',
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric',
-          }),
-          startTime: startTime.toLocaleString('en-US', {hour: '2-digit', minute: '2-digit'}),
-          endTime: endTime.toLocaleString('en-US', {hour: '2-digit', minute: '2-digit'}),
-        };
-      });
-
-      events.push(...batchEvents);
+        if (!querySnapshot.empty) {
+          events.push(...querySnapshot.docs.map((doc) => formatEvent(doc)));
+        }
+      } catch (batchError) {
+        console.error("Error fetching batch of events:", batchError);
+      }
     }
 
     return events;
-    }
   } catch (error) {
     console.error("Error fetching events:", error);
     return [];
   }
 };
+
+const formatEvent = (doc) => {
+  try {
+    const eventData = doc.data();
+    if (!eventData) {
+      console.warn("Warning: Event data is empty for document", doc.id);
+      return null;
+    }
+
+    const eventDate = eventData.eventDate?.toDate();
+    const startTime = eventData.startTime?.toDate();
+    const endTime = eventData.endTime?.toDate();
+
+    return {
+      id: doc.id,
+      ...eventData,
+      eventDate: eventDate?.toLocaleString("en-US", {
+        weekday: "short",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      }) || "N/A",
+      startTime: startTime?.toLocaleString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }) || "N/A",
+      endTime: endTime?.toLocaleString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }) || "N/A",
+    };
+  } catch (formatError) {
+    console.error("Error formatting event:", formatError);
+    return null;
+  }
+};
+
 
 export const getEventsForDate = async (date, studentId) => {
   try {
@@ -459,7 +475,6 @@ export const getEventsForDate = async (date, studentId) => {
     }
 
     if (userDoc.data().role === "admin") {
-      console.log(userDoc.data().role);
       const coursesSnapshot = await getDocs(collection(db, "courses"));
       const courses = coursesSnapshot.docs.map((doc) => doc.id);
       const courseRefs = courses.map((courseId) => doc(db, "courses", courseId));
@@ -609,7 +624,7 @@ export const getTopEnrolledCourses = async () => {
             ...courseData,
             enrollmentCount,
             facilitatorImg: facilitatorData.user_img,
-            facilitatorName: facilitatorData.name
+            facilitatorName: `${facilitatorData.firstName} ${facilitatorData.lastName}`,
           };
         }
         return null;
@@ -702,7 +717,7 @@ export const getStudentAttendance = async (userId) => {
       where("email", "==", userData.email)
     );
     const attendanceSnapshot = await getDocs(attendanceQuery);
-
+  
     const attendanceData = [];
     attendanceSnapshot.forEach((doc) => {
       attendanceData.push({ id: doc.id, ...doc.data() });
@@ -716,7 +731,6 @@ export const getStudentAttendance = async (userId) => {
         record.courseName = eventData.courseName;
       }
     }
-
     return attendanceData;
   } catch (error) {
     console.error("Error fetching attendance:", error);

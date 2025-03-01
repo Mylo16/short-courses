@@ -13,6 +13,7 @@ import LoadingBar from './components/loadingBar';
 import AdminPanel from './pages/AdminPanel';
 import Summary from './pages/Summary';
 import CourseInfo from './pages/CourseInfo';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
 function App() {
   return(
@@ -45,6 +46,8 @@ function AppContent() {
         <Route path='/' element={<Navbar user={user} />} >
           <Route path='/signup' element={<SignupPage />}/>
           <Route path='/login' element={<LoginPage />}/>
+          <Route path='/courses/:courseId' element={<CourseInfo />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         </Route>
       </Route>
     </Routes>

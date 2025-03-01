@@ -9,16 +9,19 @@ import "../css/courseDetails.css";
 import images from "../utils/images";
 import { fetchCompletedLessons } from "../redux/enrollmentsSlice";
 import { auth } from "../utils/firebaseConfig";
+import { fetchCourseVideos } from "../redux/videosSlice";
 
 function CourseDetails() {
   const { courseId } = useParams();
   const dispatch = useDispatch();
   const { selectedCourse } = useSelector((state) => state.courses);
   const { completedLessons } = useSelector((state) => state.enrollments);
-
+  const { videos } = useSelector((state) => state.videos);
+  
   useEffect(() => {
     dispatch(fetchCourseById(courseId));
     dispatch(fetchCompletedLessons({ userId: auth.currentUser.uid, courseId }));
+    dispatch(fetchCourseVideos(courseId));
   }, [courseId]);
 
 
@@ -43,6 +46,7 @@ function CourseDetails() {
       <div className="cd-ctn">
       <div className="cd-title">{selectedCourse?.course_name}</div>
       <div className="cd-description">{selectedCourse?.course_description}</div>
+      <div className="cd-instructions-main">
       <div className="cd-instructions-ctn">
         <div>Take note of the following: </div>
         <ul>
@@ -52,7 +56,9 @@ function CourseDetails() {
           <li>Courses are completed only if the lessons are completed</li>
         </ul>
       </div>
+      </div>
       <div className="cd-lessons-ctn">
+        <div className="cd-lessons-header">Lessons</div>
         {selectedCourse.lessons.map((lesson, index) => (
           <div key={index} className={`cd-lesson ${expandedLesson === lesson.id ? 'expanded' : ''}`}>
           <div 
@@ -76,14 +82,29 @@ function CourseDetails() {
           </div>
         ))}
       </div>
+      <div className="cd-videos-ctn">
+        <div className="cd-videos-title">Course Videos</div>
+        {videos.length === 0 ? (
+          <div className="no-videos">There are no videos for this course yet</div>
+        ):(
+          videos.map((video, index) => (
+            <div className="cd-video-ctn" key={index}>
+              <div>{video.title}</div>
+              <iframe
+                className="cd-video-embedder"
+                src={video.video_url} 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen>
+              </iframe>
+            </div>
+          ))
+        )}
+        
+
       </div>
-      <div className='logo-strike cd-bottom'>
-        <img className='strike-mob' src={images.logo2}/>
-        <img className='strike-mob' src={images.logo2}/>
-        <img className='strike-mob' src={images.logo2}/>
-        <img className='strike-pc' src={images.logo2}/>
-        <img className='strike-pc' src={images.logo2}/>
       </div>
+      
     </>
     
   );

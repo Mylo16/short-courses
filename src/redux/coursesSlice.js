@@ -51,7 +51,7 @@ const coursesSlice = createSlice({
       .addCase(fetchCourses.fulfilled, (state, action) => {
         state.loading = false;
         state.courses = action.payload;
-        state.allCourses = action.payload.flat();
+        state.allCourses = action.payload.flat().sort((a, b) => a.course_name.localeCompare(b.course_name));
       })
       .addCase(fetchCourses.rejected, (state, action) => {
         state.loading = null;

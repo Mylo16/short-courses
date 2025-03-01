@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import LoadingBar from "../components/loadingBar";
 import '../css/session.css';
 import { auth, db } from "../utils/firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, signOut } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [userData, setUserData] = useState({email: '', password: '', confirm: '', name: '', phone: ''});
+  const [userData, setUserData] = useState({email: '', password: '', confirm: '', firstName: '', lastName: '', phone: ''});
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -20,7 +20,7 @@ export default function SignupPage() {
   const [hasDigit, setHasDigit] = useState(false);
   const [hasSpecialChar, setHasSpecialChar] = useState(false);
   const [isLengthValid, setIsLengthValid] = useState(false);
-
+  
   useEffect(() => {
     validatePassword(userData.password);
   }, [userData.password, hasUpperCase, hasLowerCase, hasDigit, hasSpecialChar, isLengthValid]);
@@ -32,37 +32,46 @@ export default function SignupPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
+    
     const reg = /^([a-z0-9_]+)@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/;
-    if(!reg.test(userData.email)) {
+    if (!reg.test(userData.email)) {
       setError("Invalid Email");
+      setLoading(false);
       return;
     }
-
-    if(userData.password !== userData.confirm) {
+  
+    if (userData.password !== userData.confirm) {
       setError("Passwords do not match");
+      setLoading(false);
       return;
     } 
-    else if(!isPasswordValid) {
+  
+    if (!isPasswordValid) {
       setError("Invalid password input; all requirements must pass");
+      setLoading(false);
       return;
     }
-
-    setLoading(true);
+  
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
       const user = userCredential.user;
 
-      await setDoc(doc(db, "users", user.uid), {
-        name: userData.name,
+      await sendEmailVerification(user);
+      await signOut(auth);
+
+      await setDoc(doc(db, "tempUsers", user.uid), {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
         email: user.email,
+        role: "student",
+        emailVerified: false,
         phone: userData.phone,
-        role: 'student',
-        enrolledCourses: [],
-        progress: {}
       });
 
-      setLoading(false);
-      navigate('/dashboard');
+      alert("Verification email sent! Please check your inbox.");
+      navigate("/login");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -110,8 +119,12 @@ export default function SignupPage() {
         <p className="welcome-txt">Hello, Welcome</p>
         <p className="signin-txt">Sign up for better experience</p>
         <div className="input-container">
-          <input placeholder="name" value={userData.name} onChange={handleOnChange} required name="name" id="name" className="input-field"/>
-          <label htmlFor="name" className="input-label">Name</label>
+          <input placeholder="First Name" value={userData.firstName} onChange={handleOnChange} required name="firstName" id="firstName" className="input-field"/>
+          <label htmlFor="firstName" className="input-label">First Name</label>
+        </div>
+        <div className="input-container">
+          <input placeholder="Last Name" value={userData.lastName} onChange={handleOnChange} required name="lastName" id="lastName" className="input-field"/>
+          <label htmlFor="lastName" className="input-label">Last Name</label>
         </div>
         <div className="input-container">
           <input placeholder="Email address" value={userData.email} onChange={handleOnChange} name="email" id="email" required className="input-field" />
@@ -154,10 +167,7 @@ export default function SignupPage() {
           </li>
         </ul>
         <input type="submit" disabled={submitDisabled} className="submit" value="Sign Up" />
-        <div className="google-auth">
-          <img src={images.google} alt="google-logo" />
-          <div>Signin with Google</div>
-        </div>
+        
         {error && <p className="session-error">{error}</p>}
       </form>
       </div>

@@ -3,8 +3,9 @@ import images from "../utils/images"
 import LoadingBar from "../components/loadingBar";
 import { replace, useNavigate } from "react-router-dom";
 import '../css/session.css';
-import { auth } from "../utils/firebaseConfig";
+import { auth, provider, db, signOut } from "../utils/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { getDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,11 +32,23 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      await signInWithEmailAndPassword(auth, userData.email, userData.password);
-      navigate('/dashboard', { replace: true });
+      const userCredential = await signInWithEmailAndPassword(auth, userData.email, userData.password);
+      let user = userCredential.user;
+
+      await user.reload();
+      user = auth.currentUser;
+
+      if (!user.emailVerified) {
+        console.log("not Verified");
+        setError("Please verify your email before logging in.");
+        await signOut(auth);
+        return;
+      }
+
     } catch (err) {
-      setError("Invalid Logins");
+      setError(err.message.split("/")[1].split(")")[0]);
     } finally {
       setLoading(false);
     }
@@ -44,6 +57,7 @@ export default function LoginPage() {
   const togglePasswordVisibility = () => {
     setShowPassword(prevState => !prevState);
   };
+
   return (
     <>
       <main className="main">
@@ -68,11 +82,8 @@ export default function LoginPage() {
           <img className="show-password" src={ showPassword ? images.view : images.noView } alt='show-password' onClick={togglePasswordVisibility}/>
         </div>
         <input type="submit" disabled={submitDisabled} className="submit" value="Login" />
-        <p className="forgot-password">Forgot Password?</p>
-        <div className="google-auth">
-          <img src={images.google} alt="google-logo" />
-          <div>Signin with Google</div>
-        </div>
+        <p onClick={() => navigate("/forgot-password")} className="forgot-password">Forgot Password?</p>
+        
         {error && <p className="session-error">{error}</p>}
       </form>
       </div>

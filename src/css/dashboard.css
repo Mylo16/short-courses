@@ -31,12 +31,13 @@
   display: flex;
   cursor: pointer;
   font-size: 12px;
-  border-bottom: 1px solid var(--secondary-text);
+  border-bottom: 1px solid rgba(255, 0, 0, 0.158);
 }
 
 .tsc-main {
   display: flex;
   background-color: #d9d7e7;
+  background-color: #d8010131;
   border-radius: 5px;
 }
 
@@ -50,10 +51,12 @@
 .active-stn.highlight,
 .completed-stn.highlight {
   background-color: rgb(241, 241, 247);
+  background-color: #d80101;
   -webkit-box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.75);
   -moz-box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.75);
   box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.377);
   border-radius: 5px;
+  color: var(--primary-bg)
 }
 
 .yc-header {
@@ -70,8 +73,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--secondary-text);
-  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 0, 0, 0.212);
+  padding: 10px 0 20px;
   cursor: pointer;
 }
 
@@ -89,9 +92,14 @@
   gap: 10px;
 }
 
+.yc-right {
+  margin-right: 1em;
+}
+
 .yc-left img {
   width: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.568);
+  /* border: 1px solid rgba(0, 0, 0, 0.568); */
+  box-shadow: 0px 0px 2px 0px red;
   padding: 1px;
   border-radius: 10px;
 }
@@ -107,6 +115,7 @@
 
 .yc-message {
   width: 200px;
+  font-size: 12px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -123,6 +132,7 @@
 
 .view-cert:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .timeline-stn {
@@ -130,7 +140,7 @@
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.753);
+  background-color: rgba(255, 255, 255, 0.945);
 }
 
 .tl-header {
@@ -149,6 +159,16 @@
   overflow-x: auto;
   padding: 20px 1px;
   gap: 1em;
+}
+
+.tl-ctn::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.tl-ctn::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 5px;
 }
 
 .tl-card {
@@ -172,7 +192,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: var(--secondary-accent);
+  background-color: var(--primary-bg);
   overflow: hidden;
 }
 
@@ -306,12 +326,18 @@
   height: 3rem; /* 128px */
 }
 
+.absolute {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 .text {
   position: absolute;
-  font-size: 12px;
-  top: 25%;
-  left: 20%;
+  font-size: 14px;
+  top: 30%;
+  left: 32%;
 }
 
 .yc-profile-ctn {
@@ -332,36 +358,35 @@
   width: 100%;
 }
 
-.bottom {
-  margin-bottom: 0;
-}
-
 @media (min-width: 768px) {
   .dashboard-ctn {
     height: 94vh;
   }
+
+  .yc-course-name,
+  .yc-message {
+    overflow: visible;
+  }
+
+  .yc-left {
+    gap: 22px;
+  }
+
+  .yc-left img {
+    width: 40px;
+  }
+  
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
   .timeline-stn,
   .courses-stn,
-  .logo-strike,
   .your-courses {
     padding-left: 30%;
   }
 }
 
 @media (min-width: 1201px) {
-  .logo-strike,
-  .your-courses
-  {
-    padding-left: 25%;
-  }
-
-  .logo-strike {
-    justify-content: center;
-    gap: 10em;
-  }
 
   .yc-ctn {
     padding-left: 25%;
@@ -371,6 +396,10 @@
     padding-right: 0;
     gap: 3em;
 
+  }
+
+  .yc-course-name {
+    font-size: 16px;
   }
 
   .tl-ctn {

@@ -166,7 +166,7 @@ export default function Dashboard() {
                   <div className="yc-img-ctn"><img src={course.course_pic} /></div>
                   <div className="yc-summary-ctn">
                     <div>▶️ {course.numVideos} videos</div>
-                    <div>⌚ {course.duration} weeks</div>
+                    <div>⌚ {course.duration}</div>
                   </div>
                   <div className="yc-name">{course.course_name}</div>
                   <div className="yc-status tp-price">GHC {course.price}.00</div>

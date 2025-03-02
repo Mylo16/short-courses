@@ -1,10 +1,10 @@
 :root {
   --primary-bg: #fff8ee;
-  --secondary-bg: rgb(216, 1, 1);
+  --secondary-bg: #f4511e;
   --accent-bg: #2C2C2C;
 
   --primary-text: #2C2C2C;
-  --secondary-text: #d80101;
+  --secondary-text: #f4511e;
   --muted-text: #757575;
 
   --primary-accent: rgb(255, 152, 0);

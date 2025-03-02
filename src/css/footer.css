@@ -1,6 +1,6 @@
 :root {
   --primary-bg: #fff8ee;
-  --secondary-bg: rgb(216, 1, 1);
+  --secondary-bg: #f4511e;
   --accent-bg: #2C2C2C;
 
   --primary-text: #2C2C2C;
@@ -28,7 +28,7 @@
   display: flex;
   justify-content: space-between;
   padding: 0 1em;
-  color: rgb(255, 255, 255);
+  color: var(--primary-text);
   position: relative;
   margin-bottom: 1em;
 }
@@ -39,28 +39,23 @@
   left: 0%;
   content: "";
   width: 100%;
-  height: 1.5px;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgb(248, 245, 245) 50%, rgba(0, 0, 0, 0) 100%);
+  height: 1px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, var(--secondary-bg) 50%, rgba(0, 0, 0, 0) 100%);
 }
 
 .ft-content-blk {
   font-size: 10px;
-  font-weight: 200;
+  font-weight: 300;
 }
 
 .ft-content-title {
   font-weight: 500;
   font-size: x-small;
-  color: wheat;
+  color: var(--secondary-bg);
 }
 
 .ft-content-blk .ft-main {
   font-size: 1.2em;
-}
-
-.ft-main {
-  background: linear-gradient(70deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
-  height: 40vh;
 }
 
 .ft-social-ctn {
@@ -69,14 +64,13 @@
 }
 .ft-social-ctn img {
   width: 25px;
-  background-color: wheat;
   border-radius: 30%;
 }
 
 .copyright {
   text-align: center;
   font-size: 10px;
-  color: wheat;
+  color: var(--secondary-bg);
   padding-bottom: 2em;
 }
 
@@ -86,7 +80,7 @@
   }
 
   .ft-content-title {
-    font-size: smallt5;
+    font-size: small;
   }
 
   .ft-content-blk {

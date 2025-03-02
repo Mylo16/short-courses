@@ -1,10 +1,10 @@
 :root {
   --primary-bg: #fff8ee;
-  --secondary-bg: rgb(216, 1, 1);
+  --secondary-bg: #f4511e;
   --accent-bg: #2C2C2C;
 
   --primary-text: #2C2C2C;
-  --secondary-text: #d80101;
+  --secondary-text: #f4511e;
   --muted-text: #757575;
 
   --primary-accent: rgb(255, 152, 0);
@@ -82,7 +82,7 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: -30%;
   background-color: #2c2c2ccc;
   z-index: 999;
 }
@@ -93,6 +93,7 @@
   text-align: center;
   border-radius: 10px;
   font-size: 14px;
+  margin-top: -14em;
 }
 
 .em-number {

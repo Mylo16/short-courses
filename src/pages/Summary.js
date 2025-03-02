@@ -27,6 +27,7 @@ export default function Summary() {
       <div className="summary-ctn">
         <section className="sum-quiz-stn">
           <div className="sum-title">Attendance</div>
+          <div className="st-notice">⚠️ Missing 3 classes for a course will deny your certificate request</div>
           <div className="table-container">
             {/* Table Header */}
             <div

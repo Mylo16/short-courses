@@ -123,7 +123,7 @@ export default function NavBar2() {
             </li>
             <li className={`side-link ${location.pathname === '/certificate' ? 'active' : ''}`} onClick={() => setIsOpen(false)}>
               <img className="link-icon" src={images.certificateIcon} alt="certificate"/>  
-              <Link className="link" to="/certificate">Certificate</Link>
+              <Link className="link" to="/certificate">Certificates</Link>
             </li>
             <li className={`side-link ${user.role !== "admin" ? 'not-admin' : ''} ${location.pathname === '/admin' ? 'active' : ''}`} onClick={() => setIsOpen(false)}>
               <img className="link-icon" src={images.admin} alt="admin"/>

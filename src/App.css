@@ -2,7 +2,7 @@
 
 :root {
   --primary-bg: #fff8ee;
-  --secondary-bg: rgb(216, 1, 1);
+  --secondary-bg: #f4511e;
   --accent-bg: #2C2C2C;
 
   --primary-text: #2C2C2C;
@@ -60,7 +60,7 @@ a:hover {
 
 button {
   background-color: var(--secondary-bg);
-  color: var(--primary-text);
+  color: var(--primary-bg);
   border: none;
   padding: 10px 20px;
   border-radius: 5px;

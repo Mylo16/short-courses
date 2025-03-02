@@ -1,10 +1,10 @@
 :root {
   --primary-bg: #fff8ee;
-  --secondary-bg: rgb(216, 1, 1);
+  --secondary-bg: #f4511e;
   --accent-bg: #2C2C2C;
 
   --primary-text: #2C2C2C;
-  --secondary-text: #d80101;
+  --secondary-text: #f4511e;
   --muted-text: #757575;
 
   --primary-accent: rgb(255, 152, 0);
@@ -65,7 +65,7 @@
 
 .banner-container img {
   border-radius: 200px;
-  border-bottom: solid 2px var(--secondary-accent);
+  border-bottom: solid 2px var(--secondary-bg);
   width: 400px;
   position: absolute;
   top: -40%;
@@ -77,8 +77,8 @@
 .txt-bot3 {
   font-size: small;
   border-radius: 10px;
-  background-color: var(--secondary-accent);
-  color: var(--secondary-text);
+  background-color: var(--secondary-bg);
+  color: var(--primary-bg);
   text-align: center;
   width: fit-content;
   padding: 5px;
@@ -161,7 +161,7 @@
 
 /******* SEARCH COURSES *******/
 .logo-strike {
-  background: linear-gradient(0deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
+  background: linear-gradient(0deg, #fff8ee, #ff6b6b, var(--secondary-bg));
   display: flex;
   justify-content: space-between;
   margin: 4em 0;
@@ -176,7 +176,7 @@
 }
 
 .search-courses {
-  margin-top: 9em;
+  margin-top: 11em;
   overflow-x: hidden;
 }
 
@@ -335,14 +335,14 @@
 }
 
 .popular-courses-ctn {
-  background: linear-gradient(0deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
   padding: 1em;
 }
 
 .pc-title {
   text-align: center;
-  font-size: 1.2em;
+  font-size: 1.5em;
   font-weight: 450;
+  color: var(--secondary-bg);
 }
 
 .pc-description {
@@ -355,9 +355,10 @@
 
 /***** FACILITATORS *****/
 .fs-title {
-  font-size: 1.2em;
+  font-size: 1.5em;
   margin-top: 2em;
   text-align: center;
+  color: var(--secondary-bg);
 }
 
 .fs-card-ctn {
@@ -401,7 +402,7 @@
 }
 
 .fs-img-ctn {
-  background: linear-gradient(0deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
+  background: linear-gradient(0deg, #fff8ee, #ff6b6b, var(--secondary-bg));
   border-radius: 15px;
   position: relative;
   overflow: hidden;
@@ -417,14 +418,14 @@
 }
 
 .location-icon {
-  background-color: var(--secondary-accent);
   border-radius: 50%;
   margin-right: 5px;
+  padding: 1px;
 }
 
 /***** TESTIMONIALS *****/
 .testimonials {
-  background: linear-gradient(40deg, rgba(255,88,88,1) 0%, rgba(39,202,204,1) 100%);
+  box-shadow: 0px -2px 0px 0px #f4501e1a;
   padding: 2em 10px 8em 10px;
 }
 
@@ -432,6 +433,7 @@
   font-family: 1.2em;
   text-align: center;
   font-weight: 450;
+  color: var(--secondary-bg);
 }
 
 .tes-description {
@@ -453,6 +455,7 @@
   border-radius: 15px;
   padding: 20px;
   transform: scale(0);
+  box-shadow: 0px 0px 2px 0px var(--secondary-bg);
 }
 
 .in-view2,
@@ -492,7 +495,8 @@
 }
 
 .tes-stu-major {
-  background-color: var(--secondary-accent);
+  background-color: var(--secondary-bg);
+  color: var(--primary-bg);
   padding: 0 5px;
   border-radius: 5px;
 }
@@ -516,26 +520,30 @@
 /***** GET IN TOUCH *****/
 .contact-stn {
   border: none;
-  background: linear-gradient(-60deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%);
+  /* background: linear-gradient(-60deg, rgba(39,202,204,1) 0%, rgba(255,88,88,1) 100%); */
+  /* background: white; */
+  
 }
 
 .cs-content-ctn {
-  background-color: var(--primary-bg);
-  border-radius: 50px 0 50px 0;
+  background-color: #f4511e;
+  border-radius: 150px 0 150px 0;
   margin-top: -2em;
   padding: 10px 0;
+  box-shadow:  0px 0px 2px 0px #f4511e;
 
 }
 
 .cs-content-left {
   text-align: center;
   margin-bottom: 1em;
+  color: var(--primary-bg);
 }
 
 .input {
   margin-top: 25px;
   padding: 12px;
-  background-color: white;
+  background-color: var(--primary-bg);
   border: none;
   font-family: "Inter", sans-serif;
   width: 90%;
@@ -567,6 +575,9 @@
 .getintouchbtn {
   transition: all 300ms;
   margin: 1em;
+  background: none;
+  border: 1px solid var(--primary-accent);
+  color: var(--primary-bg);
 }
 
 .getintouchbtn:hover {
@@ -590,7 +601,6 @@
   max-width: 500px;
   margin: 3em auto;
   border-radius: 20px;
-  background: linear-gradient(40deg, rgba(255,88,88,1) 0%, rgba(39,202,204,1) 100%);
 }
 
 @media (min-width: 768px) {
@@ -630,6 +640,8 @@
 
   .pc-ctn {
     box-shadow: none;
+    width: 80%;
+    margin: auto;
   }
 
   .pc-ctn .yc-ctn {
@@ -638,7 +650,9 @@
     gap: 2em;
   }
 
- 
+  .fs-card-ctn {
+    width: 80%;
+  }
 
   .popular-courses-ctn {
     padding: 4em 0;

@@ -2,11 +2,11 @@
 
 :root {
   --primary-bg: #fff8ee;
-  --secondary-bg: rgb(216, 1, 1);
+  --secondary-bg: #f4511e;
   --accent-bg: #2C2C2C;
 
   --primary-text: #2C2C2C;
-  --secondary-text: #d80101;
+  --secondary-text: #f4511e;
   --muted-text: #757575;
 
   --primary-accent: rgb(255, 152, 0);
@@ -85,7 +85,7 @@ header, .navbar {
   display: flex;
   align-items: center;
   margin-right: 50px;
-  background-color: rgb(216, 1, 1);
+  background-color: var(--secondary-bg);
   border-radius: 10px;
   padding: 2px 5px;
   height: 25px;
@@ -103,7 +103,7 @@ header, .navbar {
   top: 70px;
   right: -100%;
   height: 100vh;
-  background: var(--accent-bg);
+  background: var(--secondary-bg);
   width: 50%;
   z-index: 999;
   transition: right 0.5s ease-in-out;
@@ -114,7 +114,7 @@ header, .navbar {
 }
 
 .links a {
-  color: var(--primary-text);
+  color: var(--primary-bg);
   text-decoration: none;
   padding: 0.5rem 1rem;
   display: block;
@@ -123,6 +123,22 @@ header, .navbar {
 
 .side-link:hover {
   background: #ccc;
+}
+
+.login-form h2 {
+  font-weight: 400;
+  font-size: 18px;
+  color: white;
+}
+
+.login-form p {
+  color: var(--primary-bg);
+  font-size: 14px;
+}
+
+.fp-btn {
+  border: 1px solid var(--primary-accent);
+  padding: 5px 10px;
 }
 
 @media (min-width: 768px) {
@@ -145,5 +161,6 @@ header, .navbar {
 
   .links a {
     display: inline;
+    color: var(--secondary-bg);
   }
 }

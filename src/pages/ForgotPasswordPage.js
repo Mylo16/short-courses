@@ -37,17 +37,18 @@ export default function ForgotPasswordPage() {
       <form onSubmit={handleResetPassword} className="login-form">
         <h2>Reset Password</h2>
         <p>Enter your email to reset your password</p>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <button type="submit" disabled={loading}>Send Reset Email</button>
+        
+        <div className="input-container">
+          <input placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" id="email" required className="input-field" />
+          <label htmlFor="email" className="input-label">Enter your email address</label>
+        </div>
+        <button className="fp-btn" type="submit" disabled={loading}>Send Reset Email</button>
         {error && <p className="session-error">{error}</p>}
         {message && <p className="session-success">{message}</p>}
-        <p onClick={() => navigate("/login")} className="link">Back to Login</p>
+        <p onClick={() => navigate("/login")} className="link">
+          <span>&larr;</span>
+          Back to Login
+        </p>
       </form>
     </div>
   );

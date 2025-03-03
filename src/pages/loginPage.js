@@ -84,7 +84,7 @@ export default function LoginPage() {
         <input type="submit" disabled={submitDisabled} className="submit" value="Login" />
         <p onClick={() => navigate("/forgot-password")} className="forgot-password">Forgot Password?</p>
         
-        {error && <p className="session-error">{error}</p>}
+        {error && <p className="session-error">⚠️ {error}</p>}
       </form>
       </div>
       </main>

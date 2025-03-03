@@ -69,6 +69,11 @@
   text-decoration: none;
   background-color: transparent;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.signup-btn:hover {
+  background-color: var(--primary-bg);
 }
 
 .welcome-txt {
@@ -116,7 +121,7 @@
   font-size: 0.9em;
   padding: 0.7em 0.5em 0;
   margin-bottom: 0.5em;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 8px;
 }
 
@@ -150,6 +155,7 @@
   margin-top: 0em;
   margin-bottom: 1.5em;
   border-radius: 5em;
+  cursor: pointer;
   border: none;
   background-color: var(--primary-accent);
   color: white;
@@ -158,6 +164,7 @@
 .submit:disabled {
   background-color: rgb(255, 152, 0);
   opacity: 0.3;
+  cursor: default;
 }
 
 .forgot-password {
@@ -188,8 +195,8 @@
   width: 30px;
 }
 
-.session-error {
-  color: red;
+.form-container .session-error {
+  color: var(--primary-accent);
   width: 80%;
   text-align: center;
 }
@@ -208,6 +215,7 @@
 
 .password-check div {
   font-size: 12px;
+  color: var(--primary-bg);
 }
 
 .password-check img {

@@ -381,7 +381,7 @@
 
 .fs-card {
   min-width: 200px;
-  max-width: 400px;
+  max-width: 250px;
   border-radius: 15px;
   padding: 10px;
   background-color: var(--primary-bg);
@@ -680,5 +680,11 @@
   .tes-title {
     font-size: 1.5em;
     margin-top: 2em;
+  }
+}
+
+@media (min-width: 1201px) {
+  .fs-card-ctn {
+    width: fit-content;
   }
 }

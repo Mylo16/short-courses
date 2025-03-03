@@ -86,4 +86,9 @@
   .ft-content-blk {
     font-size: 12px;
   }
+
+  .ft-content-ctn {
+    justify-content: center;
+    gap: 10%;
+  }
 }

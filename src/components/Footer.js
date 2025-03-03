@@ -38,7 +38,7 @@ function Footer() {
           <div>+233206546917</div>
         </div>
       </div>
-      <div className='copyright'>Copyright ©️ 2025 E-Short Courses. All rights reserved</div>
+      <div className='copyright'>Copyright © 2025 E-Short Courses. All rights reserved</div>
     </footer>
   );
 }

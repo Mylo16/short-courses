@@ -117,7 +117,7 @@ export default function SignupPage() {
           </div>
         </div>
         <p className="welcome-txt">Hello, Welcome</p>
-        <p className="signin-txt">Sign up for better experience</p>
+        <p className="signin-txt">Sign up to enroll in courses</p>
         <div className="input-container">
           <input placeholder="First Name" value={userData.firstName} onChange={handleOnChange} required name="firstName" id="firstName" className="input-field"/>
           <label htmlFor="firstName" className="input-label">First Name</label>
@@ -168,7 +168,7 @@ export default function SignupPage() {
         </ul>
         <input type="submit" disabled={submitDisabled} className="submit" value="Sign Up" />
         
-        {error && <p className="session-error">{error}</p>}
+        {error && <p className="session-error">⚠️{error}</p>}
       </form>
       </div>
       </main>

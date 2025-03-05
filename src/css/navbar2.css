@@ -125,6 +125,7 @@ html[data-theme="dark"] .course-links {
 .nav2-right {
   display: flex;
   gap: 1em;margin-right: 2em;
+  align-items: center;
 }
 
 .link-icon {

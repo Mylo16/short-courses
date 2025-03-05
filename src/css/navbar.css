@@ -148,6 +148,7 @@ html[data-theme="dark"] .links a {
 .right-nav {
   display: flex;
   gap: 1em;
+  align-items: center;
 }
 
 @media (min-width: 768px) {

@@ -83,6 +83,7 @@ tr .fc-col-header-cell-cushion {
     align-items: center;
     z-index: 999;
   }
+
   .modal {
     background: white;
     padding: 20px;
@@ -92,6 +93,11 @@ tr .fc-col-header-cell-cushion {
     text-align: center;
     font-size: 12px;
   }
+
+  html[data-theme="dark"] .modal {
+    background-color: var(--third-bg);
+  }
+
   ul {
     list-style: none;
     padding: 0;

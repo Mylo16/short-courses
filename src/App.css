@@ -3,6 +3,7 @@
 :root {
   --primary-bg: #fff8ee;
   --secondary-bg: #f4511e;
+  --third-bg: rgba(255, 255, 255, 0.945);
   --accent-bg: #2C2C2C;
 
   --primary-text: #2C2C2C;
@@ -18,6 +19,15 @@
 
   --hover-bg: #333333;
   --focus-outline: #FF9800;
+  --dm-secondary-bg: #151b23;
+  --dm-primary-bg: #0d1117;
+}
+
+html[data-theme="dark"] body,
+html[data-theme="dark"]  .timeline-stn {
+  --primary-bg: #0d1117;
+  --primary-text: #fff8ee;
+  --third-bg: #151b23;
 }
 
 #root {
@@ -81,6 +91,20 @@ input, select, textarea {
   border-radius: 4px;
   padding: 5px 10px;
   box-sizing: border-box;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background-color: var(--third-bg);
+  border: 1px solid var(--primary-accent);
+}
+
+.dark-mode-btn {
+  border-radius: 50%;
+  padding: 3px 7px;
+  display: flex;
+  align-items: center;
 }
 
 input:focus, select:focus, textarea:focus {

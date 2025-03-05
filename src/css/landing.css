@@ -340,7 +340,7 @@
 
 .pc-title {
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: 450;
   color: var(--secondary-bg);
 }
@@ -354,8 +354,12 @@
 
 
 /***** FACILITATORS *****/
+html[data-theme="dark"] .facilitators-stn {
+  background-color: var(--third-bg);
+}
+
 .fs-title {
-  font-size: 1.5em;
+  font-size: 1.2em;
   margin-top: 2em;
   text-align: center;
   color: var(--secondary-bg);
@@ -568,6 +572,10 @@
   resize: none;
 }
 
+html[data-theme="dark"] #textarea {
+  background-color: var(--third-bg);
+}
+
 .border {
   border-bottom: 1px solid #e4e4e4;
 }
@@ -654,6 +662,10 @@
     width: 80%;
   }
 
+  .fs-title {
+    font-size: 1.5em;
+  }
+
   .popular-courses-ctn {
     padding: 4em 0;
   }
@@ -666,6 +678,10 @@
 
   .pc-description {
     margin-bottom: 3em;
+  }
+
+  .pc-title {
+    font-size: 1.5em;
   }
 
   .tes-card-ctn {
@@ -687,4 +703,13 @@
   .fs-card-ctn {
     width: fit-content;
   }
+
+  .pc-title {
+    font-size: 1.5em;
+  }
+
+  .fs-title {
+    font-size: 1.5em;
+  }
+
 }

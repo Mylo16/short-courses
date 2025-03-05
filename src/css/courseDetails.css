@@ -62,6 +62,10 @@
   padding: 10px;
 }
 
+html[data-theme="dark"] .cd-instructions-main {
+  background-color: var(--third-bg);
+}
+
 .cd-instructions-ctn ul {
   list-style: initial;
   list-style-position: outside;

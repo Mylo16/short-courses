@@ -163,6 +163,10 @@ tr .fc-col-header-cell-cushion {
     padding: 20px;
   }
 
+  html[data-theme="dark"] .fc {
+    background-color: var(--third-bg);
+  }
+
   .calendar-title {
     font-size: 1.2em;
     font-weight: 450;

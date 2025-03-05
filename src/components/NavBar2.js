@@ -5,6 +5,7 @@ import '../css/navbar2.css';
 import images from "../utils/images";
 import { useAuth } from "../utils/authProvider";
 import { useSelector } from "react-redux";
+import ThemeToggle from "../utils/ThemeToggle";
 
 export default function NavBar2() {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,6 +84,7 @@ export default function NavBar2() {
         )}
       </div>
         <div className="nav2-right">
+          <ThemeToggle />
         <div onClick={() => { logout() }} className='sign-in sign-in2'>
           <img className='profile' src={images.profile} alt="Profile" />
           <p>Sign out</p>

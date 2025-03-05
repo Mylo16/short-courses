@@ -96,6 +96,10 @@
   display: none;
 }
 
+html[data-theme="dark"] .course-links {
+  background-color: var(--third-bg);
+}
+
 .expand {
   display: flex;
 }

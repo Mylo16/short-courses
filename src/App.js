@@ -14,11 +14,14 @@ import AdminPanel from './pages/AdminPanel';
 import Summary from './pages/Summary';
 import CourseInfo from './pages/CourseInfo';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import { ThemeProvider } from './utils/ThemeContext';
 
 function App() {
   return(
   <AuthProvider>
-    <AppContent />
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   </AuthProvider>
   );
 }

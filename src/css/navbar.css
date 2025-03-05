@@ -121,6 +121,10 @@ header, .navbar {
   font-size: 14px;
 }
 
+html[data-theme="dark"] .links a {
+  color: white;
+}
+
 .side-link:hover {
   background: #ccc;
 }
@@ -139,6 +143,11 @@ header, .navbar {
 .fp-btn {
   border: 1px solid var(--primary-accent);
   padding: 5px 10px;
+}
+
+.right-nav {
+  display: flex;
+  gap: 1em;
 }
 
 @media (min-width: 768px) {

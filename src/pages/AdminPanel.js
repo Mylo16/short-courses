@@ -15,7 +15,6 @@ const AdminPanel = () => {
     name: "",
     pic: "",
     duration: "",
-    numVideos: "",
     price: "",
     description: "",
     facilitatorId: "",
@@ -177,14 +176,6 @@ const AdminPanel = () => {
               name="duration"
               placeholder="Duration"
               value={courseData.duration}
-              onChange={handleCourseChange}
-              required
-            />
-            <input
-              type="number"
-              name="numVideos"
-              placeholder="Number of Videos"
-              value={courseData.numVideos}
               onChange={handleCourseChange}
               required
             />

@@ -30,7 +30,9 @@ function AppContent() {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <LoadingBar />;
+    return( 
+     <div className=''><LoadingBar /></div>
+    );
   }
   return (
     <Routes>

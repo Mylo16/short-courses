@@ -1,22 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { updateAttendance, createAttendance, getStudentAttendance } from '../utils/firestoreService';
+import { updateAttendance, createAttendance, getStudentAttendance, getFrequentAbsenteesByCourse } from '../utils/firestoreService';
 
 export const updateUserAttendance = createAsyncThunk('attendance/updateUserAttendance', async (eventId) => {
   return await updateAttendance(eventId);
 });
 
-export const createUserAttendance = createAsyncThunk('attendance/createUserAttendance', async ({ eventId, userData }) => {
-  return await createAttendance(eventId, userData);
+export const createUserAttendance = createAsyncThunk('attendance/createUserAttendance', async ({ eventId, userData, courseId }) => {
+  return await createAttendance(eventId, userData, courseId);
 });
 
 export const fetchUserAttendance = createAsyncThunk('attendance/fetchUserAttendance', async (userId) => {
   return await getStudentAttendance(userId);
 });
 
+export const fetchAbsentees = createAsyncThunk('attendance/fetchAbsentees', async (courseId) => {
+  return await getFrequentAbsenteesByCourse(courseId);
+});
+
 const attendanceSlice = createSlice({
   name: 'attendance',
   initialState: {
     attendance: [],
+    absentees: [],
+    absenteesLoading: false,
     loading: false,
     error: null,
   },
@@ -33,12 +39,16 @@ const attendanceSlice = createSlice({
         state.loading = false;
         state.attendance = action.payload;
       })
-      .addMatcher((action) => action.type.endsWith('/pending'), (state) => {
-        state.loading = true;
+      .addCase(fetchAbsentees.fulfilled, (state, action) => {
+        state.absenteesLoading = false;
+        state.absentees = action.payload;
       })
-      .addMatcher((action) => action.type.endsWith('/rejected'), (state, action) => {
+      .addCase(fetchAbsentees.pending, (state) => {
+        state.absenteesLoading = true;
+      })
+      .addCase(fetchAbsentees.rejected, (state, action) => {
+        state.absenteesLoading = false;
         state.error = action.error.message;
-        state.loading = false;
       });
   },
 });

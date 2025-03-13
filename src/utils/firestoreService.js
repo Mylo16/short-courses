@@ -17,7 +17,7 @@ import {
 import axios from "axios";
 
 export const addCourse = async (courseData) => {
-  const { name, pic, duration, numVideos, price, description, facilitatorId, programme, courseVideo } = courseData;
+  const { name, pic, duration, price, description, facilitatorId, programme, courseVideo } = courseData;
 
   try {
     const coursesRef = collection(db, "courses");
@@ -35,7 +35,6 @@ export const addCourse = async (courseData) => {
       facilitatorId: doc(db, "users", facilitatorId),
       course_pic: pic,
       duration,
-      numVideos,
       lessons: [],
       price,
       course_description: description,
@@ -110,8 +109,17 @@ export const addVideo = async (videoData) => {
       courseId: doc(db, "courses", courseId),
     });
 
+    const courseRef = doc(db, "courses", courseId);
+    const courseSnapshot = await getDoc(courseRef);
+
+    let currentNumVideos = 0;
+    if (courseSnapshot.exists() && courseSnapshot.data().videos) {
+      currentNumVideos = courseSnapshot.data().videos.length;
+    }
+
     await updateDoc(doc(db, "courses", courseId), {
       videos: arrayUnion(videoRef),
+      numVideos: currentNumVideos + 1,
     });
 
     alert("Videos created successfully");
@@ -683,7 +691,7 @@ export const updateAttendance = async (eventId) => {
   }
 };
 
-export const createAttendance = async (eventId, userData) => {
+export const createAttendance = async (eventId, userData, courseId) => {
   try {
     const attendanceQuery = query(
       collection(db, "attendance"),
@@ -697,6 +705,7 @@ export const createAttendance = async (eventId, userData) => {
         eventId,
         email: userData.email,
         status: "Absent",
+        courseId,
       });
 
       console.log(`Attendance created: ${eventId}_${userData.email}`);
@@ -735,6 +744,43 @@ export const getStudentAttendance = async (userId) => {
   } catch (error) {
     console.error("Error fetching attendance:", error);
     throw error;
+  }
+};
+
+export const getFrequentAbsenteesByCourse = async (courseId) => {
+  try {
+    if (!courseId) {
+      console.error("Course ID is required!");
+      return [];
+    }
+    // Query attendance records for the given course where status is "absent"
+    const attendanceRef = collection(db, "attendance");
+    const q = query(
+      attendanceRef,
+      where("courseId", "==", courseId), // Filter by courseId directly
+      where("status", "==", "Absent")
+    );
+
+    const attendanceSnapshot = (await getDocs(q));
+    
+    if (attendanceSnapshot.empty) {
+      return [];
+    }
+    
+    // Process attendance data
+    const absenceCount = {};
+    attendanceSnapshot.docs.forEach((doc) => {
+      const { email } = doc.data();
+      absenceCount[email] = (absenceCount[email] || 0) + 1;
+    });
+    // Get users with more than 5 absences
+    const frequentAbsentees = Object.keys(absenceCount).filter(
+      (email) => absenceCount[email] > 3
+    );
+    return frequentAbsentees;
+  } catch (error) {
+    console.error("Error fetching attendance records:", error);
+    return [];
   }
 };
 

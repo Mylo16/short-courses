@@ -22,7 +22,7 @@ export default function Dashboard() {
   const { eventsOnTimeline, loading } = useSelector((state) => state.calendar);
   const { currentUser } = useSelector((state) => state.users);
   const [isActive, setIsActive] = useState(true);
-  console.log(eventsOnTimeline);
+
   useEffect(() => {
     dispatch(fetchEnrollments(auth.currentUser.uid));
     dispatch(fetchEvents(auth.currentUser.uid));
@@ -45,9 +45,9 @@ export default function Dashboard() {
     };
   }, [navigate]);
 
-  const joinZoomClass = async (zoomUrl, eventId) => {
+  const joinZoomClass = async (zoomUrl, eventId, courseId) => {
     try {
-    await dispatch(createUserAttendance({ eventId, userData: currentUser }));
+    await dispatch(createUserAttendance({ eventId, userData: currentUser, courseId }));
     console.log(auth.currentUser.uid);
     window.open(zoomUrl, "_blank");
     } catch (error) {
@@ -142,7 +142,7 @@ export default function Dashboard() {
                     <div>{event.facilitatorName}</div>
                   </div>
                   <div className="tl-btn-ctn">
-                    <button onClick={() => joinZoomClass(event.zoomLink, event.id)} type="button">Join Now</button>
+                    <button onClick={() => joinZoomClass(event.zoomLink, event.id, event.courseId)} type="button">Join Now</button>
                     {currentUser.role === "admin" && (
                       <button onClick={() => dispatch(updateUserAttendance(event.id))} type="button">Mark Attendance</button>
                     )}

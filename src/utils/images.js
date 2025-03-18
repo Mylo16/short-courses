@@ -45,12 +45,16 @@ import admin from '../assets/admin.png';
 import dashboard from '../assets/dashboard.png';
 import aboutUs from '../assets/about-us.png';
 import courses from '../assets/courses.png';
+import banner2 from '../assets/banner2.png';
+import banner3 from '../assets/banner3.jpg';
 
 
 const images = {
   profile,
   tableBanner,
+  banner3,
   chevronDown,
+  banner2,
   chevronUp,
   noData,
   certificateIcon,

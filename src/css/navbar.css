@@ -122,7 +122,7 @@ header, .navbar {
 }
 
 html[data-theme="dark"] .links a {
-  color: white;
+  color: rgb(247, 235, 214);
 }
 
 .side-link:hover {
@@ -152,6 +152,18 @@ html[data-theme="dark"] .links a {
 }
 
 @media (min-width: 768px) {
+  .nav {
+    padding-top: 2em;
+  }
+
+  .logo-pic {
+    width: 12em;
+  }
+
+  .nav .right-nav > .sign-in {
+    margin-right: 0;
+  }
+
   .menu-icon {
     display: none;
   }
@@ -162,6 +174,7 @@ html[data-theme="dark"] .links a {
     width: 55%;
     background: none;
     top: 0;
+    padding-top: 2em;
   }
 
   .side-links {
@@ -172,5 +185,6 @@ html[data-theme="dark"] .links a {
   .links a {
     display: inline;
     color: var(--secondary-bg);
+    font-size: 1em;
   }
 }

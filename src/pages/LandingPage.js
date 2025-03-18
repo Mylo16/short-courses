@@ -97,7 +97,9 @@ export default function LandingPage() {
       </div>
       <div className='banner-outline'>
         <div className='banner-container'>
-          <img src={images.banner} alt='landing-banner' />
+          <img className='banner1' src={images.banner} alt='landing-banner' />
+          <img className='banner2' src={images.banner2} alt='landing-banner' />
+
         </div>
         <div className='txt-bot1'>50% OFF 😎</div>
         <div className='txt-bot2'>10+ Online Courses</div>

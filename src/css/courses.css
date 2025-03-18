@@ -44,6 +44,10 @@
   .courses-ctn {
     padding-left: 30%;
   }
+
+  .courses-title {
+    padding: 3.5em 10px 0 10px;
+  }
 }
 
 @media (min-width: 1201px) {
@@ -59,7 +63,7 @@
   }
 
   .courses-title {
-    margin: 1em 0;
+    margin: 2.5em 0 0 0;
   }
 
   .cat-title {

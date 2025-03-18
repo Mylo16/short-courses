@@ -107,6 +107,10 @@ export default function SignupPage() {
   return (
     <>
       <main className="main">
+      <div className="session-banner-ctn">
+        <div className="sb-overlay"></div>
+        <img className="session-banner" src={images.banner3} alt="banner"/>
+      </div>
       <div className="form-container">
       <div className={loading ? 'loading' : 'no-loading'}><LoadingBar /></div>
       <form className="login-form" onSubmit={handleSubmit}>

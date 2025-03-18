@@ -26,6 +26,7 @@
 .cd-title {
   font-size: 16px;
   font-weight: 450;
+  margin-top: 1em;
 }
 
 .cd-description {
@@ -178,6 +179,10 @@ html[data-theme="dark"] .cd-instructions-main {
   .cd-lesson-wrap {
     font-size: 14px;
   }
+
+  .cd-title {
+    margin-top: 3.5em;
+  }
 }
 
 @media (min-width: 1201px) {
@@ -195,5 +200,13 @@ html[data-theme="dark"] .cd-instructions-main {
 
   .cd-lesson-wrap {
     font-size: 14px;
+  }
+
+  .cd-title {
+    margin-top: 3.5em;
+  }
+
+  .cd-lesson {
+    padding: 20px;
   }
 }

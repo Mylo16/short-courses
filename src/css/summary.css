@@ -197,6 +197,10 @@ color: white;
   .table-body {
     margin: 0;
   }
+
+  .sum-title {
+    padding-top: 2.5em;
+  }
 }
 
 @media (min-width: 1201px) {
@@ -210,5 +214,9 @@ color: white;
 
   .table-body {
     margin: 0;
+  }
+
+  .sum-title {
+    padding-top: 2.5em;
   }
 }

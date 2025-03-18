@@ -26,7 +26,7 @@
 html[data-theme="dark"] body,
 html[data-theme="dark"]  .timeline-stn {
   --primary-bg: #0d1117;
-  --primary-text: #fff8ee;
+  --primary-text: rgb(247, 235, 214);
   --third-bg: #151b23;
 }
 

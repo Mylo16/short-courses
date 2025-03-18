@@ -397,6 +397,10 @@ html[data-theme="dark"] .yc-card {
   .your-courses {
     padding-left: 30%;
   }
+
+  .welcome-msg {
+    margin-top: 3.5em;
+  }
 }
 
 @media (min-width: 1201px) {
@@ -438,14 +442,14 @@ html[data-theme="dark"] .yc-card {
     margin-top: 3em;
   }
 
-  .welcome-msg {
-    margin: 1em 0;
-  }
-
   .toggle-stn {
     padding-left: 25%;
     width: 90%;
     max-width: 1700px;
     box-sizing: border-box;
+  }
+
+  .welcome-msg {
+    margin: 3.5em 0 1em 0;
   }
 }
